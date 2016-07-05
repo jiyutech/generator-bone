@@ -1,0 +1,5 @@
+.component-sample-component {
+  &:after {
+    display: inline; content:' & it\'s SASS.';
+  }
+}

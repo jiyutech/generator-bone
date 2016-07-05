@@ -1,0 +1,52 @@
+{
+  "dev": {
+    "debug": true,
+    "port": 7600,
+    "serverLrPort": 37300,
+    "clientLrPort": 37301,
+
+    "imgBase": "",
+
+    "buildPath": ".tmp/",
+    "srcPath": "app/",
+    "entryJsSrc": [
+      "app/lib/**/*.js",
+      "!app/lib/**/*.server.js",
+      "app/layout/**/*.js",
+      "!app/layout/**/*.server.js",
+      "app/page/**/*.js",
+      "!app/page/**/*.server.js"
+    ],
+    "entryCssSrc": [
+      "app/lib/**/*.{sass,scss,css}",
+      "app/layout/**/*.{sass,scss,css}",
+      "app/page/**/*.{sass,scss,css}"
+    ],
+    "viewPath": "app/page",
+    "rootifyPath": "app/lib/_rootify/"
+  },
+
+  "prod": {
+    "port": 7600,
+
+    "imgBase": "",
+
+    "srcPath": "app/",
+    "buildPath": ".build/",
+    "assetsPrefix": "/static/",
+    "viewPath": ".build/static/page",
+    "rootifyPath": ".build/static/lib/_rootify/"
+  },
+
+  "test": {
+    "port": 7600,
+
+    "imgBase": "",
+
+    "srcPath": "app/",
+    "buildPath": ".build/",
+    "assetsPrefix": "/static/",
+    "viewPath": ".build/static/page",
+    "rootifyPath": ".build/static/lib/_rootify/"
+  }
+}

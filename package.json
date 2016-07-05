@@ -1,0 +1,23 @@
+{
+  "name": "generator-bone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "files": [
+    "generators/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/jiyutech/bone-generator.git"
+  },
+  "keywords": ["yeoman-generator"],
+  "author": "Alexius Lee",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/jiyutech/bone-generator#readme",
+  "dependencies": {
+    "yeoman-generator": "^0.21.2"
+  }
+}

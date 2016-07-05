@@ -1,0 +1,1 @@
+require('../bone/test.js');
