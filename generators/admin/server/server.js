@@ -7,7 +7,7 @@ const Server = bone.Server;
 const middleware = bone.middleware;
 
 
-module.exports = new Server('/admin', function( router, render ){
+module.exports = new Server(function( router, render ){
 
   // 菜单
   router.use( middleware.navigator( require( projectBase +'/admin/config/admin-sidemenu.json' ) ) );

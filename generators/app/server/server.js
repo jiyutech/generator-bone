@@ -5,7 +5,7 @@ const pageBase = 'app/page/';
 const Server = require( projectBase +'/bone').Server;
 
 
-module.exports = new Server('/', function( router, render ){
+module.exports = new Server(function( router, render ){
 
   // # Sample
   // 不包含server端处理的简单页面

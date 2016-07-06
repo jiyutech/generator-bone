@@ -29,6 +29,7 @@ app
 conf.sites.forEach(function( site ){
 
   var server = require( path.normalize(projectBase +'/'+ site.server ) );
+  server.mount = site.mount;
 
   switch (env) {
     case 'dev':
@@ -78,7 +79,7 @@ conf.sites.forEach(function( site ){
   }
 
   // 挂载
-  app.use(mount(server.mountPath, server.app));
+  app.use(mount( site.mount, server.app ));
 });
 
 const Router = require('koa-router');

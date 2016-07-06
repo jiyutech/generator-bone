@@ -3,12 +3,14 @@
     "port": 7600,
     "sites": [
       {
-        "src": "app/",
-        "server": "app/server/server.js"
-      },
-      {
+        "mount": "/admin",
         "src": "admin/",
         "server": "admin/server/server.js"
+      },
+      {
+        "mount": "/",
+        "src": "app/",
+        "server": "app/server/server.js"
       }
     ]
   },
