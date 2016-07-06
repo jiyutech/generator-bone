@@ -53,30 +53,27 @@ var render = function(viewPath, data){
   return doRender(path.normalize( viewPath ), data);
 };
 
-module.exports = function(){
-
-  // Page Class
-  return function ( initBy ){
-    // Type 1: View path string.
-    if ( typeof initBy === 'string' ) {
-      if ( initBy.slice(-3) === '.js' ) {
-        if ( initBy.indexOf(projectBase) !== 0 ) {
-          initBy = path.normalize( projectBase +'/'+ initBy ); // require() needs absolute path.
-        }
-        initBy = require(initBy);
+// Render Interface
+module.exports = function( initBy ){
+  // Type 1: View path string.
+  if ( typeof initBy === 'string' ) {
+    if ( initBy.slice(-3) === '.js' ) {
+      if ( initBy.indexOf(projectBase) !== 0 ) {
+        initBy = path.normalize( projectBase +'/'+ initBy ); // require() needs absolute path.
       }
-      else {
-        return function *(){
-          this.body = yield render.bind(this)( path.normalize( initBy ) );
-        };
-      }
-    }
-    // Type 2: Factory -> Generator handler.
-    if ( typeof initBy === 'function' ) {
-      return initBy( render );
+      initBy = require(initBy);
     }
     else {
-      logger.error('Unsupported page type.');
+      return function *(){
+        this.body = yield render.bind(this)( path.normalize( initBy ) );
+      };
     }
-  };
+  }
+  // Type 2: Factory -> Generator handler.
+  if ( typeof initBy === 'function' ) {
+    return initBy( render );
+  }
+  else {
+    logger.error('Unsupported page type.');
+  }
 };
