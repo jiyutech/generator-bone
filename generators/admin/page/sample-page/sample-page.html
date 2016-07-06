@@ -1,0 +1,25 @@
+{% extends '../../layout/normal.html' %}
+
+{% block title %}Let's Blues.{% endblock %}
+
+{% block styles %}
+  {% parent %}
+  <!-- 页面CSS引入位置 -->
+  <link rel="stylesheet" href="/admin/static/page/sample-page/sample-page.css">
+{% endblock %}
+
+{% block scripts %}
+  {% parent %}
+  <!-- 页面JS引入位置 -->
+  <script src="/admin/static/page/sample-page/sample-page.js"></script>
+{% endblock %}
+
+{% block template %}
+{% raw %}
+
+<div>
+  <p>Hello.</p>
+</div>
+
+{% endraw %}
+{% endblock %}

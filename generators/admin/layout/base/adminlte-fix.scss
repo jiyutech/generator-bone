@@ -1,0 +1,32 @@
+.label-disabled {
+  background: #aaa;
+}
+
+.dropdown-menu {
+  min-width: 0;
+}
+
+.table {
+  table-layout: auto;
+  th { white-space: nowrap; }
+}
+
+.table-responsive {
+  height: auto;
+}
+
+@media (max-width: 520px) {
+  .box-body {
+    overflow: auto;
+  }
+}
+
+.form-control-static label {
+  font-weight: normal;
+}
+
+/* 解决AdminLTE原始布局实现，在页面打开JS未加载时，footer在页面中部的问题；（非最优解） */
+.content-wrapper,
+.right-side {
+  min-height: 2000px;
+}

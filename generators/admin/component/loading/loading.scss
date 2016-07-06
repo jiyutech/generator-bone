@@ -1,0 +1,42 @@
+@import "../../layout/base/mixins.scss";
+@import "../../vendor/pace/pace.min.scss";
+
+.loading-component {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999999; height: 0; text-align: center;
+  .loading-box {
+    position: absolute; width: 80px; height: 30px; line-height: 30px; text-align: center;
+    left: 50%; top: 0; margin-left: -40px; font-size: 16px;
+    border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+    background: rgba(34, 45, 50, .3); color: #fff; opacity: .5;
+  }
+  .err-box {
+    position: relative; display: inline-block; margin: 5px 0 0 0; padding: 7px 15px; padding-right: 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    .close {
+      position: absolute; right: 8px; top: 50%; margin-top: -11px;
+    }
+    a {
+      color: #a94442; border-bottom: 1px solid #a94442;
+    }
+  }
+
+  .toggle-loading-transition {
+    transform: translateY(0);
+    opacity: 1;
+    transition: all .4s ease;
+  }
+  .toggle-loading-enter, .toggle-loading-leave {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+
+  .toggle-error-transition {
+    transform: translateY(0);
+    opacity: 1;
+    transition: all .4s ease;
+  }
+  .toggle-error-enter, .toggle-error-leave {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}

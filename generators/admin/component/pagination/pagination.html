@@ -1,0 +1,13 @@
+<div class="pagination-component">  
+  <ul class="pagination">
+    <li v-class="disabled: page <= 1">
+      <a href="#" v-on="click: page > 1 && page--">«</a>
+    </li>
+    <li v-repeat="pageTotal" v-class=" active: $index +1 == page ">
+      <a href="#" v-on="click: page = $index +1">{{$index +1}}</a>
+    </li>
+    <li v-class="disabled: page >= pageTotal">
+      <a href="#" v-on="click: page < pageTotal && page++">»</a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,10 @@
+<div class="loading-component">
+  <!-- <div class="loading-box" v-show="isLoading" v-transition="toggle-loading">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div> -->
+
+  <div class="err-box alert alert-block alert-danger" v-if="isErrPopping" v-transition="toggle-error">
+    <p>{{{errMsg}}}</p>
+    <button type="button" class="close" v-on="click: popNext">×</button>
+  </div>
+</div>

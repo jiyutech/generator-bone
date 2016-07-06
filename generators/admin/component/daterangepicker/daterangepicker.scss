@@ -1,0 +1,32 @@
+.component-daterangepicker {
+  font-size: 0; vertical-align: middle;
+  &.full-mode button {
+    margin-right: 10px;
+  }
+  > span {
+    display: inline-block; vertical-align: middle;
+    > span {
+      display: inline-block;
+      font-size: 14px; vertical-align: middle;
+      height: 22px; line-height: 21px;
+    }
+    .st, .et {
+      position: relative;
+      padding: 0 3px; margin: 0 2px;
+      a {
+        display: none;
+        position: absolute;
+        left: 0; right: 0; top: 0; bottom: 0;
+        background: rgba(0,0,0,0.3); color: #fff;
+        border-radius: 4px;
+        i {
+          color: #333;
+          position: absolute; right: -5px; top: -6px;
+        }
+      }
+      &:hover a {
+        display: block;
+      }
+    }
+  }
+}

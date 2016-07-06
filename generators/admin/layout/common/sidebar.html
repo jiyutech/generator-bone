@@ -1,0 +1,46 @@
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <!-- <div class="user-panel" style="margin: 10px 0 20px 0">
+      <div class="pull-left image" style="height: 45px;">
+        <img src="{{imgBase}}/preset/stuff/fm_logo_white_sm.png_120x120" height="45" width="45" class="img-circle" alt="User Image" />
+      </div>
+      <div class="pull-left info">
+        <p>{{loginInfo.username}}</p>
+        <a href="javascript: voi(0)">{{loginInfo.role}}</a>
+      </div>
+    </div> -->
+    <ul class="sidebar-menu">
+      {% for i1, cate in navigator.cates %}
+      {% set i1Active = navigator.currentNavIndex[0] === i1 %}
+      <li class="header">{{cate.name}}</li>
+      {% for i2, cate in cate.sub %}
+      {% set i2Active = i1Active && navigator.currentNavIndex[1] === i2 %}
+      <li class="treeview {% if i2Active %}active{% endif %} {{cate.className || ''}}">
+        <a href="{{cate.url || cate.sub && cate.sub[0] && cate.sub[0].url || 'javascript:void(0)'}}" {% if cate.newTabOpen %}target="_blank"{% endif %}>
+          {% if cate.icon %}<i class="{{cate.icon}}"></i>{% endif %}
+          <span>{{cate.name}}</span>
+          {% if cate.sub.length %}<i class="fa fa-angle-left pull-right"></i>{% endif %}
+        </a>
+        {% if cate.sub.length %}
+        <ul class="treeview-menu">
+          {% for i3, cate in cate.sub %}
+          {% set i3Active = i2Active && navigator.currentNavIndex[2] === i3 %}
+          <li {% if i3Active %}class="active"{% endif %} {{cate.className || ''}}>
+            <a href="{{cate.url || cate.sub && cate.sub[0] && cate.sub[0].url || 'javascript:void(0)'}}" {% if cate.newTabOpen %}target="_blank"{% endif %}>
+              {% if i3Active %}<i class="{{cate.activeIcon || cate.icon || 'fa fa-chevron-circle-right'}}"></i>
+              {% else %}<i class="{{cate.icon || 'fa fa-circle-o'}}"></i>{% endif %}
+            {{cate.name}}
+          </a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+  </section>
+  <!-- /.sidebar -->
+</aside>

@@ -1,0 +1,45 @@
+<div class="component-img-uploader" v-el="container" v-class="
+  'single-pic': isSinglePic,
+" style="{{isSinglePic ? ('width:'+ width +'px'):''}}">
+  <ul>
+    <li v-repeat="imgObjList" v-style="
+      width: width +'px',
+      height: height +'px'
+    ">
+      <span class="img" v-class="
+        'img-rounded': imgRounded
+      " style="background-image: url('{{(status == 'uploaded' ? (domain + key +'_600xn') : src)}}')">
+        <img v-attr="
+          src: (status == 'uploaded' ? (domain + key +'_600xn') : src)
+        "/>
+        <span v-if="status != 'uploaded'" class="loading-mask" v-class="
+          'img-rounded': imgRounded
+        " v-style="
+          line-height: height +'px'
+        " >{{percent}}%</span>
+      </span>
+
+      <a href="javascript: void(0)" v-on="
+        click: remove(this)
+      " class="remove-btn"><i class="fa fa-times"></i></a>
+      <a v-if="$index != 0" href="javascript: void(0)" v-on="
+        click: moveLeft(this)
+      " class="move-left-btn"><i class="fa fa-chevron-left"></i></a>
+      <a v-if="$index != imgObjList.length-1" href="javascript: void(0)" v-on="
+        click: moveRight(this)
+      " class="move-right-btn"><i class="fa fa-chevron-right"></i></a>
+    </li>
+    <li v-show="!maxLength || imgObjList.length < maxLength" class="add-img" v-style="
+      width: width +'px',
+      height: height +'px'
+    ">
+      <a v-class="
+        'img-rounded': imgRounded
+      " href="javascript: void(0)" >
+        <input type="file" multiple accept="image/*" v-el="pickfiles" />
+      </a>
+    </li>
+  </ul>
+  <input v-if="isSinglePic" type="file" accept="image/*" v-el="pickfile" />
+</div>
+</script>
