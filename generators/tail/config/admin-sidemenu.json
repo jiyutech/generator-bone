@@ -1,0 +1,68 @@
+{
+  "cates": [
+    {
+      "name": "导航",
+      "sub": [
+
+        {
+          "name": "总览",
+          "icon": "fa fa-line-chart",
+          "url":  "/tail"
+        },
+        {
+          "name": "商品",
+          "icon": "fa fa-th-large",
+          "sub": [
+            {
+              "name": "所有商品",
+              "url":  "/tail/goods-list"
+            },
+            {
+              "name": "发布可定制商品",
+              "icon": "fa fa-plus",
+              "url":  "/tail/post-goods"
+            }
+          ]
+        },
+        {
+          "name": "订单",
+          "icon": "fa fa-gavel",
+          "sub": [
+            {
+              "name": "所有订单",
+              "url":  "/tail/order-list"
+            },
+            {
+              "name": "待付款",
+              "description": "未付款的订单",
+              "url":  "/tail/order-list?status=待付款"
+            },
+            {
+              "name": "待处理",
+              "description": "（订单已付款）",
+              "url":  "/tail/order-list?status=待处理"
+            },
+            {
+              "name": "发货",
+              "url":  "/tail/order-list?status=待发货,已发货"
+            },
+            {
+              "name": "售后",
+              "url":  "/tail/order-list?status=待售后,待退货,待退款"
+            },
+            {
+              "name": "已完成",
+              "url":  "/tail/order-list?status=已完成"
+            }
+          ]
+        },
+        {
+          "name": "用户",
+          "description": "",
+          "icon": "fa fa-user",
+          "url":  "/tail/buyer-list"
+        }
+      ]
+    }
+  ]
+}

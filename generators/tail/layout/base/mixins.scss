@@ -1,0 +1,23 @@
+$staticPrefix: "/static-tail";
+
+
+// text-overflow: ellipsis;
+@mixin text-overflow-multiline {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  span {
+    white-space: nowrap;
+  }
+}
+.text-overflow-multiline { @include text-overflow-multiline; }
+
+@mixin text-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  span {
+    white-space: nowrap;
+  }
+}
+.text-overflow-ellipsis { @include text-overflow-ellipsis; }

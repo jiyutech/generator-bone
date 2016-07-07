@@ -1,1 +1,1 @@
-require('./bone/inset/gulpfile.js').setup();
+require('./.bone/src/gulpfile.js').setup();

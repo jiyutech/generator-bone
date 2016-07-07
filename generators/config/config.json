@@ -3,14 +3,18 @@
     "port": 7600,
     "sites": [
       {
-        "mount": "/admin",
-        "src": "admin/",
-        "server": "admin/server/server.js"
+        "src": "tail/",
+        "server": "tail/server/server.js",
+        "sitePrefix": "/tail",
+        "staticPrefix": "/static-tail",
+        "rootifyPaths": []
       },
       {
-        "mount": "/",
         "src": "app/",
-        "server": "app/server/server.js"
+        "server": "app/server/server.js",
+        "sitePrefix": "",
+        "staticPrefix": "/static",
+        "rootifyPaths": [ "app/lib/_rootify" ]
       }
     ]
   },

@@ -1,0 +1,15 @@
+@import "./mixins.scss";
+
+$fa-font-path: $staticPrefix +'/vendor/font-awesome/fonts'; // for font-awesome fonts
+$icon-font-path: $staticPrefix +'/vendor/bootstrap-sass/assets/fonts/bootstrap/'; // for bootstrap fonts
+@import "../../vendor/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "../../vendor/font-awesome/scss/font-awesome.scss";
+
+
+@import "../../vendor/adminlte/adminlte.scss";
+@import "../../vendor/adminlte/skins/skin-purple.scss";
+
+@import "./adminlte-fix.scss";
+
+/* Components */
+@import "../../component/loading/loading.scss";
