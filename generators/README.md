@@ -1,15 +1,15 @@
 ## 环境搭建指南
 
 ### 搭建NodeJS环境
-安装NodeJS环境（v6.1.0），建议使用nvm安装
+安装NodeJS环境（使用`package.json`中声明的版本号），建议使用nvm安装
 
 ### 引入项目所需模块
 命令行切换到本项目根目录
-安装所有项目所需的node模块（在package.json中描述），执行命令：npm i
+执行命令：npm install，安装所有项目所需的node模块（在package.json中描述）
 
 ### 开发环境
 命令行切换到本项目根目录
-启动开发环境，执行命令：npm run dev
+执行命令：npm run dev，启动开发环境
 
 ### 生产环境
 生成静态文件发布代码：在开发机上，执行命令：npm run build。（目标目录：./build/，完成后将代码更新至服务器）

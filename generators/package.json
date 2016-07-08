@@ -16,7 +16,7 @@
     "forever-stop": "forever stop ${PWD##*/}"
   },
   "engines": {
-    "node": "6.1.0"
+    "node": "4.4.7"
   },
   "dependencies": {
     "blueimp-md5": "^2.3.0",
