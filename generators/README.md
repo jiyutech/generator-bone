@@ -18,7 +18,7 @@
 
 
 ### Bone 1.0 到 1.1 升级步骤：
-1. 更换整个bone目录。
+1. 删掉老的`bone`目录，引入新的`.bone`目录。
 2. 更换`gulpfile.js`的内容。
 3. 源代码中的`router.js`，按新规则更新并重命名为`server.js`。
 4. 更新`config.json`，增加`common`配置，增加`sites`配置，去除不再需要的打包相关配置。
