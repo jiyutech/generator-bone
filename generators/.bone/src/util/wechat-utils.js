@@ -1,7 +1,7 @@
 'use strict';
 
 const qs = require('qs');
-const logger = require('./logger')('WeChat Utils:');
+const logger = require('../logger')('WeChat Utils:');
 
 module.exports = {
   // 判断请求是否在微信中
@@ -21,6 +21,7 @@ module.exports = {
     logger.log(url);
     return url;
   },
+  // 剔除URL中的code和state参数
   pureUrl: function ( url ){
     var q;
     if ( /.+?(\?.*)/.test(url) ) {

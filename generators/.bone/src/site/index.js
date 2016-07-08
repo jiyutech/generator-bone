@@ -27,7 +27,12 @@ module.exports = function( siteConf ){
     request: request,
     render: null, // 将在Render中被完善
     logger: siteLogger,
+    utils: {
+      weChat: require('../util/wechat-utils')
+    }
   };
+
+  const render = new Render( controllerHelper, siteConf );
 
   const site = {
     app: koa(),
@@ -35,7 +40,8 @@ module.exports = function( siteConf ){
     router: new Router({
       prefix: (!siteConf.sitePrefix || siteConf.sitePrefix == '/') ? undefined : siteConf.sitePrefix
     }),
-    render: new Render( controllerHelper, siteConf ),
+    render: render,
+    wrap: render, // 包裹中间件（render在中间件场景下的语法糖）
     request: request,
     middleware: {
       navigator: nav,
