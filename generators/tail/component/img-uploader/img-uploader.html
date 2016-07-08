@@ -1,45 +1,37 @@
-<div class="component-img-uploader" v-el="container" v-class="
+<div class="component-img-uploader" v-el="container" :class="{
   'single-pic': isSinglePic,
-" style="{{isSinglePic ? ('width:'+ width +'px'):''}}">
+}" :style="isSinglePic ? ('width:'+ width +'px'):''">
   <ul>
-    <li v-repeat="imgObjList" v-style="
+    <li v-for="img in imgObjList" :style="{
       width: width +'px',
       height: height +'px'
-    ">
-      <span class="img" v-class="
+    }">
+      <span class="img" :class="{
         'img-rounded': imgRounded
-      " style="background-image: url('{{(status == 'uploaded' ? (domain + key +'_600xn') : src)}}')">
-        <img v-attr="
-          src: (status == 'uploaded' ? (domain + key +'_600xn') : src)
-        "/>
-        <span v-if="status != 'uploaded'" class="loading-mask" v-class="
+      }" :style="{ 'background-image': 'url('+ (img.status == 'uploaded' ? (domain + img.key +'_600xn') : img.src) +')' }">
+        <img v-if="key" :src="(img.status == 'uploaded' ? (domain + key +'_600xn') : img.src)"/>
+        <span v-if="img.status != 'uploaded'" class="loading-mask" :class="{
           'img-rounded': imgRounded
-        " v-style="
-          line-height: height +'px'
-        " >{{percent}}%</span>
+        }" :style="{
+          'line-height': height +'px'
+        }" >{{img.percent}}%</span>
       </span>
 
-      <a href="javascript: void(0)" v-on="
-        click: remove(this)
-      " class="remove-btn"><i class="fa fa-times"></i></a>
-      <a v-if="$index != 0" href="javascript: void(0)" v-on="
-        click: moveLeft(this)
-      " class="move-left-btn"><i class="fa fa-chevron-left"></i></a>
-      <a v-if="$index != imgObjList.length-1" href="javascript: void(0)" v-on="
-        click: moveRight(this)
-      " class="move-right-btn"><i class="fa fa-chevron-right"></i></a>
+      <a href="javascript: void(0)" @click="remove(img)" class="remove-btchuangdien"><i class="fa fa-times"></i></a>
+      <a v-if="$index != 0" href="javascript: void(0)" @click="moveLeft(img)" class="move-left-btn"><i class="fa fa-chevron-left"></i></a>
+      <a v-if="$index != imgObjList.length-1" href="javascript: void(0)" @click="moveRight(img)" class="move-right-btn"><i class="fa fa-chevron-right"></i></a>
     </li>
-    <li v-show="!maxLength || imgObjList.length < maxLength" class="add-img" v-style="
+    <li v-show="!maxLength || imgObjList.length < maxLength" class="add-img" :style="{
       width: width +'px',
       height: height +'px'
-    ">
-      <a v-class="
+    }">
+      <a :class="{
         'img-rounded': imgRounded
-      " href="javascript: void(0)" >
-        <input type="file" multiple accept="image/*" v-el="pickfiles" />
+      }" href="javascript: void(0)" >
+        <input type="file" multiple accept="image/*" v-el:pickfiles />
       </a>
     </li>
   </ul>
-  <input v-if="isSinglePic" type="file" accept="image/*" v-el="pickfile" />
+  <input v-if="isSinglePic" type="file" accept="image/*" v-el:pickfile />
 </div>
 </script>

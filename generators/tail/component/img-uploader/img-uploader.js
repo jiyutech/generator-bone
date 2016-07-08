@@ -24,8 +24,7 @@ module.exports = Vue.component( 'img-uploader', {
         // percent: 0,
         // src: '',
         // key: ''
-      ],
-      'imgRounded': true,
+      ]
     };
   },
   props: [
@@ -78,7 +77,7 @@ module.exports = Vue.component( 'img-uploader', {
   watch: {
     imgObjList: {
       deep: true,
-      handler: function( val, old ){
+      handler: function( val ){
         // 处理最长长度
         if ( this.maxLength && val.length > this.maxLength ) {
           this.imgObjList = val.slice(0, this.maxLength);
@@ -86,7 +85,7 @@ module.exports = Vue.component( 'img-uploader', {
         }
         // UI修正
         Vue.nextTick(function(){
-          var btn = $(this.$$.pickfiles);
+          var btn = $(this.$els.pickfiles);
           var el = $(this.$el);
           $(this.$el).find('.moxie-shim').css({
             left: btn.offset().left - el.offset().left,
@@ -94,7 +93,7 @@ module.exports = Vue.component( 'img-uploader', {
           });
         }.bind(this));
         // 输出修正
-        this.outputImgList = _.pluck( _.filter( this.imgObjList, function(o){
+        this.outputImgList = _.map( _.filter( this.imgObjList, function(o){
           return o.status == 'uploaded';
         }), 'key' );
         // 更新单图
@@ -112,12 +111,12 @@ module.exports = Vue.component( 'img-uploader', {
           this.outputImgList = [];
         }
         this.imgObjList = [];
-        _.forEach(this.outputImgList, function( val, i ){
+        _.forEach(this.outputImgList, function( val ){
           this.imgObjList.push({
             id: ++cid,
             status: 'uploaded',
             key: val
-          })
+          });
         }.bind(this));
       }
     }
@@ -146,32 +145,34 @@ module.exports = Vue.component( 'img-uploader', {
       this.outputImgList = [];
     }
 
-    _.forEach(this.outputImgList, function( val, i ){
+    _.forEach(this.outputImgList, function( val ){
       this.imgObjList.push({
         id: ++cid,
         status: 'uploaded',
         key: val
-      })
+      });
     }.bind(this));
+
+    if ( this.imgRounded === undefined ) this.imgRounded = true;
   },
   attached: function(){
     // Setup uploader
     var vm = this;
-    var uploader = Qiniu.uploader({
-      runtimes: 'html5,flash,html4',
-      browse_button: this.$$['pickfile'+ (this.isSinglePic ? '':'s')],
-      container: this.$$.container,
-      drop_element: this.$$.container,
-      max_file_size: '100mb',
-      flash_swf_url: '/static/vendor/qiniu/plupload/Moxie.swf',
-      dragdrop: true,
-      chunk_size: '4mb',
-      unique_names: true,
-      save_key: true,
-      uptoken_url: '/uptoken',
-      domain: this.domain,
-      auto_start: true,
-      init: {
+    window.Qiniu.uploader({
+      'runtimes': 'html5,flash,html4',
+      'browse_button': this.$els['pickfile'+ (this.isSinglePic ? '':'s')],
+      'container': this.$els.container,
+      'drop_element': this.$els.container,
+      'max_file_size': '100mb',
+      'flash_swf_url': window.data.sitePrefix +'/vendor/qiniu/plupload/Moxie.swf',
+      'dragdrop': true,
+      'chunk_size': '4mb',
+      'unique_names': true,
+      'save_key': true,
+      'uptoken_url': window.data.sitePrefix +'/qiniu-token',
+      'domain': this.domain,
+      'auto_start': true,
+      'init': {
         'FilesAdded': function(up, files) {
           _.forEach(files, function( file ){
             var o = {
@@ -196,13 +197,13 @@ module.exports = Vue.component( 'img-uploader', {
             }
           });
         },
-        'BeforeUpload': function(up, file) {
-            // var progress = new FileProgress(file, 'fsUploadProgress');
-            // var chunk_size = plupload.parseSize(this.getOption('chunk_size'));
-            // if (up.runtime === 'html5' && chunk_size) {
-            //     progress.setChunkProgess(chunk_size);
-            // }
-        },
+        // 'BeforeUpload': function(up, file) {
+        //     // var progress = new FileProgress(file, 'fsUploadProgress');
+        //     // var chunk_size = plupload.parseSize(this.getOption('chunk_size'));
+        //     // if (up.runtime === 'html5' && chunk_size) {
+        //     //     progress.setChunkProgess(chunk_size);
+        //     // }
+        // },
         'UploadProgress': function(up, file) {
           var o = _.find(vm.imgObjList, function(o){ return o.id == file.id; });
           if ( o ) {
@@ -226,7 +227,8 @@ module.exports = Vue.component( 'img-uploader', {
             // var progress = new FileProgress(file, 'fsUploadProgress');
             // progress.setComplete(up, info);
         },
-        'Error': function(up, err, errTip) {
+        // 'Error': function(up, err, errTip) {
+        'Error': function(up, err) {
           var o = _.find(vm.imgObjList, function(o){ return o.id == err.file.id; });
           if ( o ) {
             console.log(err);
@@ -236,4 +238,4 @@ module.exports = Vue.component( 'img-uploader', {
       }
     });
   }
-})
+});
