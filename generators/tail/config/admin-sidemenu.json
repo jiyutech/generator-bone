@@ -15,12 +15,12 @@
           "sub": [
             {
               "name": "所有商品",
-              "url":  "/tail/goods-list"
+              "url":  "/tail?for-sample=goods-list"
             },
             {
               "name": "发布可定制商品",
               "icon": "fa fa-plus",
-              "url":  "/tail/post-goods"
+              "url":  "/tail?for-sample=post-goods"
             }
           ]
         },
@@ -30,29 +30,29 @@
           "sub": [
             {
               "name": "所有订单",
-              "url":  "/tail/order-list"
+              "url":  "/tail?for-sample=order-list"
             },
             {
               "name": "待付款",
               "description": "未付款的订单",
-              "url":  "/tail/order-list?status=待付款"
+              "url":  "/tail?for-sample=order-list?status=待付款"
             },
             {
               "name": "待处理",
               "description": "（订单已付款）",
-              "url":  "/tail/order-list?status=待处理"
+              "url":  "/tail?for-sample=order-list?status=待处理"
             },
             {
               "name": "发货",
-              "url":  "/tail/order-list?status=待发货,已发货"
+              "url":  "/tail?for-sample=order-list?status=待发货,已发货"
             },
             {
               "name": "售后",
-              "url":  "/tail/order-list?status=待售后,待退货,待退款"
+              "url":  "/tail?for-sample=order-list?status=待售后,待退货,待退款"
             },
             {
               "name": "已完成",
-              "url":  "/tail/order-list?status=已完成"
+              "url":  "/tail?for-sample=order-list?status=已完成"
             }
           ]
         },
@@ -60,7 +60,7 @@
           "name": "用户",
           "description": "",
           "icon": "fa fa-user",
-          "url":  "/tail/buyer-list"
+          "url":  "/tail?for-sample=buyer-list"
         }
       ]
     }

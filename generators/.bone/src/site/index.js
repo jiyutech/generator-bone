@@ -36,7 +36,7 @@ module.exports = function( siteConf ){
     render: new Render( controllerHelper, siteConf ),
     request: request,
     middleware: {
-      navigator: nav
+      navigator: nav,
     },
     Logger: Logger,
   };
@@ -51,9 +51,6 @@ module.exports = function( siteConf ){
       yield next;
     });
   init( site );
-  site.app
-    .use(site.router.routes())
-    .use(site.router.allowedMethods());
 
   // 初始化静态资源服务
   switch (env) {
@@ -83,7 +80,6 @@ module.exports = function( siteConf ){
       if ( env === 'dev' ) {
         site.app.use(function *(next){
           yield next;
-          console.error(this.type);
           if ( (this.type || '').trim().indexOf('text/html') === 0 && typeof this.body === 'string' ) {
             this.body = this.body.replace('</body>', '<script>document.write(\'<script src="//\'+ (location.host || \'localhost\').split(\':\')[0] +\':'+ conf.clientLrPort +'/livereload.js?snipver=1"></\' + \'script>\')</script></body>');
           }
@@ -106,6 +102,10 @@ module.exports = function( siteConf ){
       });
 
     }
+
+  site.app
+    .use(site.router.routes())
+    .use(site.router.allowedMethods());
 
   return site;
 };

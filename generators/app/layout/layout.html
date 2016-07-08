@@ -7,7 +7,7 @@
   <meta name="format-detection" content="telephone=no">
   <meta http-equiv="x-rim-auto-match" content="none">
   {% block styles %}
-  <link rel="stylesheet" href="/static/lib/css/base.css">
+  <link rel="stylesheet" href="{{staticPrefix}}/layout/base/base.css">
   {% endblock %}
 </head>
 <body>
@@ -29,7 +29,7 @@
     <!-- # 需要保留 -->
     {% autoescape false %}<script>data = {{__data}};</script>{% endautoescape %}
     <!-- / 需要保留 -->
-    <script src="/static/lib/js/base.js"></script>
+    <script src="{{staticPrefix}}/layout/base/base.js"></script>
   {% endblock %}
 
   {% if (env == 'prod' && !conf.debug) %}

@@ -1,0 +1,10 @@
+@import "../../layout/base/mixins.scss";
+
+.container .header .lead:before {
+  content: ''; display: inline-block;
+  width: 25px; height: 25px; margin-right: 8px; vertical-align: top;
+  // # Example 在scss文件中引入static图片
+  background: url( $staticPrefix + '/lib/_rootify/favicon.png');
+  // /
+  background-size: contain;
+}

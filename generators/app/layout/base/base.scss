@@ -1,0 +1,6 @@
+@import "./mixins.scss";
+
+$fa-font-path: $staticPrefix +'/vendor/font-awesome/fonts'; // for font-awesome fonts
+$icon-font-path: $staticPrefix +'/vendor/bootstrap-sass/assets/fonts/bootstrap/'; // for bootstrap fonts
+@import "../../vendor/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "../../vendor/font-awesome/scss/font-awesome.scss";

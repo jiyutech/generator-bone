@@ -2,6 +2,12 @@
 
 {% block title %}{% parent %}<!-- TODO 页面标题 -->{% endblock %}
 
+{% block styles %}
+  {% parent %}
+  <!-- 页面CSS引入位置 -->
+  <link rel="stylesheet" href="{{staticPrefix}}/page/_sample/sample.css">
+{% endblock %}
+
 {% block scripts %}
 {% endblock %}
 
@@ -20,10 +26,10 @@
     <div class="jumbotron">
       <h1>Hello</h1>
       <ul class="lead">
-        <li><a href="/sample-page-1">Page + SASS</a></li>
-        <li><a href="/sample-page-2">Page + SASS + Server</a></li>
-        <li><a href="/sample-page-3">Page + SASS + Server + Vue</a></li>
-        <li><a href="/sample-page-4">Page + SASS + Vue + Vue Component</a></li>
+        <li><a href="{{sitePrefix}}/sample-page-1">Page + SASS</a></li>
+        <li><a href="{{sitePrefix}}/sample-page-2">Page + SASS + Server</a></li>
+        <li><a href="{{sitePrefix}}/sample-page-3">Page + SASS + Server + Vue</a></li>
+        <li><a href="{{sitePrefix}}/sample-page-4">Page + SASS + Vue + Vue Component</a></li>
       </ul>
     </div>
 
