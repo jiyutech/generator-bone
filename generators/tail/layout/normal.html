@@ -59,7 +59,7 @@
 
   <script type="x-template" id="template">
   {% block template %}
-    {% raw %}<loading loading="{{loading}}" error="{{error}}"></loading>{% endraw %}
+    {% raw %}<loading :loading.sync="loading" :error.sync="error"></loading>{% endraw %}
   {% endblock %}
   </script>
 
