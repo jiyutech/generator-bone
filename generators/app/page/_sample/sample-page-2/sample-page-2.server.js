@@ -1,13 +1,19 @@
 'use strict';
 
-// const basePath = process.cwd();
-// const env = require('get-env')();
 // const _ = require('lodash');
 // const qs = require('qs');
-// const request = require('co-request');
 // const parse = require('co-body');
-// const conf = require( basePath +'/bone/getconf')();
 
+/*
+  Simple Controller Helper Object API
+  c: {
+    env: dev | prod | test, // 运行环境
+    conf: fullSiteConf, // 配置
+    request: Object, // 包装后的co-request
+    render: Function, // 渲染 html
+    logger: like console Object, // 日志类实例
+  };
+*/
 module.exports = function( c ){
   return function *(){
     // 渲染

@@ -20,11 +20,13 @@ module.exports = function( siteConf ){
   const fullSiteConf = _.assign({}, conf, siteConf);
   const init = require( path.normalize( projectBase +'/'+ siteConf.server ) );
 
+  const siteLogger = new Logger( 'Site '+ siteConf.sitePrefix );
+
   const controllerHelper = {
     conf: fullSiteConf,
     request: request,
     render: null, // 将在Render中被完善
-    Logger: Logger,
+    logger: siteLogger,
   };
 
   const site = {
@@ -38,7 +40,7 @@ module.exports = function( siteConf ){
     middleware: {
       navigator: nav,
     },
-    Logger: Logger,
+    logger: siteLogger,
   };
 
   // 初始化 koa App
@@ -106,6 +108,8 @@ module.exports = function( siteConf ){
   site.app
     .use(site.router.routes())
     .use(site.router.allowedMethods());
+
+  siteLogger.log('running...');
 
   return site;
 };
