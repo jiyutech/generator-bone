@@ -18,7 +18,7 @@
               "url":  "/tail?for-sample=goods-list"
             },
             {
-              "name": "发布可定制商品",
+              "name": "发布商品",
               "icon": "fa fa-plus",
               "url":  "/tail?for-sample=post-goods"
             }
