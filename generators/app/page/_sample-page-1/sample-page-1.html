@@ -1,38 +1,32 @@
-{% extends '../../../layout/layout.html' %}
+{% extends '../../layout/layout.html' %}
 
 {% block title %}{% parent %}<!-- TODO 页面标题 -->{% endblock %}
 
 {% block styles %}
   {% parent %}
   <!-- 页面CSS引入位置 -->
-  <link rel="stylesheet" href="{{staticPrefix}}/page/_sample/sample-page-4/sample-page-4.css">
+  <link rel="stylesheet" href="{{staticPrefix}}/page/_sample-page-1/sample-page-1.css">
 {% endblock %}
 
 {% block scripts %}
-  {% parent %}
-  <!-- 页面JS引入位置 -->
-  <script src="{{staticPrefix}}/page/_sample/sample-page-4/sample-page-4.js"></script>
 {% endblock %}
 
-{% block template %}
-{% raw %}
+{% block content %}
 
   <div class="container">
     <div class="header">
       <h3 class="text-muted">
         <p class="lead">
-          <!-- 使用Vue实现HTML渲染 -->
+          <!-- 使用swig模板实现HTML渲染 -->
           {{project.name}} v{{project.version}}
         <p>
       </h3>
     </div>
 
     <div class="jumbotron">
-      <h1>Let's Rock.</h1>
+      <h1>Hello</h1>
       <ul class="lead">
         <li class="greetings-from-css"></li>
-        <li>{{greetingsFromMvvm}}</li>
-        <li> <sample-component></sample-component> </li>
       </ul>
     </div>
 
@@ -41,5 +35,4 @@
     </div>
   </div>
 
-{% endraw %}
 {% endblock %}

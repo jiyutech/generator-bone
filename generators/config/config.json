@@ -16,7 +16,9 @@
         "staticPrefix": "/static",
         "rootifyPaths": [ "app/lib/_rootify" ]
       }
-    ]
+    ],
+
+    "buildPath": ".build"
   },
 
   "dev": {

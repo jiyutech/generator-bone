@@ -103,7 +103,7 @@ module.exports = function( siteConf ){
     default:
 
       // 生产环境 Static Server
-      [ siteConf.src ].forEach(function( path ){
+      [ path.normalize( conf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}' ) ].forEach(function( path ){
         site.app.use(mount(siteConf.staticPrefix, koaStatic( path ), {
           maxage: 31536000000
         }));

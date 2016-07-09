@@ -5,7 +5,7 @@ var _ = window._;
 // var $ = window.jQuery;
 // var conf = window.data.conf;
 
-require('../../../component/_sample-component/sample-component.js');
+require('../../component/_sample-component/sample-component.js');
 
 new Vue({
   el: '#content',

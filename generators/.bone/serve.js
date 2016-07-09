@@ -15,10 +15,10 @@ const mount = require('koa-mount');
 require('koa-qs')(app);
 
 // const boneConf = require('./bone-config.js');
-const conf = require('./getconf.js')();
-const pkgInfo = require('../../package.json');
-const boneLogger = require('./logger.js')('Bone');
-const Site = require('./site');
+const conf = require('./src/getconf.js')();
+const pkgInfo = require('../package.json');
+const boneLogger = require('./src/logger.js')('Bone');
+const Site = require('./src/site');
 
 // secret for cookie
 app.keys = conf.cookieKeys || ['this is a default key', 'thank nodejs'];
@@ -35,7 +35,7 @@ conf.sites.forEach(function( siteConf ){
 
 const Router = require('koa-router');
 var router = new Router();
-router.all('/bone-debug', require('./debug-page.js'));
+router.all('/bone-debug', require('./src/debug-page.js'));
 
 app.use(router.routes())
     .use(router.allowedMethods());

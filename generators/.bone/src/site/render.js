@@ -53,6 +53,13 @@ module.exports = function( controllerHelper, siteConf ){
     if ( viewPath.indexOf(projectBase) === 0 ) {
       viewPath = viewPath.slice( projectBase.length );
     }
+    // 非开发环境使用build后的html
+    if ( env != 'dev' ) {
+      viewPath = path.normalize(
+        controllerHelper.conf.buildPath +'/'+ siteConf.src +'/{{staticPrefix}}/'+
+        viewPath.slice( siteConf.src.length )
+      );
+    }
     return doRender(path.normalize( viewPath ), data);
   };
 

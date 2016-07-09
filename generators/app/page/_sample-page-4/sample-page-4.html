@@ -1,17 +1,17 @@
-{% extends '../../../layout/layout.html' %}
+{% extends '../../layout/layout.html' %}
 
 {% block title %}{% parent %}<!-- TODO 页面标题 -->{% endblock %}
 
 {% block styles %}
   {% parent %}
   <!-- 页面CSS引入位置 -->
-  <link rel="stylesheet" href="{{staticPrefix}}/page/_sample/sample-page-3/sample-page-3.css">
+  <link rel="stylesheet" href="{{staticPrefix}}/page/_sample-page-4/sample-page-4.css">
 {% endblock %}
 
 {% block scripts %}
   {% parent %}
   <!-- 页面JS引入位置 -->
-  <script src="{{staticPrefix}}/page/_sample/sample-page-3/sample-page-3.js"></script>
+  <script src="{{staticPrefix}}/page/_sample-page-4/sample-page-4.js"></script>
 {% endblock %}
 
 {% block template %}
@@ -31,8 +31,8 @@
       <h1>Let's Rock.</h1>
       <ul class="lead">
         <li class="greetings-from-css"></li>
-        <li>{{greetingsFromServerSide}}</li>
         <li>{{greetingsFromMvvm}}</li>
+        <li> <sample-component></sample-component> </li>
       </ul>
     </div>
 
