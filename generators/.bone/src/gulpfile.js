@@ -22,6 +22,8 @@ var map = require('map-stream');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 var modify = require('gulp-modify');
+var rename = require('gulp-rename');
+
 
 var conf = require('./getconf.js')();
 var devConf = require('./getconf.js')('dev');
@@ -147,9 +149,11 @@ module.exports = {
     var compileTaskSets = [];
     var revPrepareTaskSets = [];
     var revTaskSets = [];
+    var revParsedTaskSets = [];
     conf.sites.forEach(function( siteConf, i ){
 
       var taskName;
+
       taskName = 'build-copy-other-'+ i;
       compileTaskSets.push(taskName);
       gulp.task(taskName, function () {
@@ -163,6 +167,22 @@ module.exports = {
           path.normalize( conf.buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate )
         ));
       });
+
+
+      if ( siteConf.rootifyPaths.length ) {
+        siteConf.rootifyPaths.forEach(function( rootifyPath, j ){
+          taskName = 'build-copy-rootify-'+ i +'-'+ j;
+          compileTaskSets.push(taskName);
+          gulp.task(taskName, function () {
+            return gulp.src([
+              path.normalize( rootifyPath +'/**/*' ),
+            ], { base: rootifyPath } )
+            .pipe(gulp.dest(
+              path.normalize( conf.buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate )
+            ));
+          });
+        });
+      }
 
       taskName = 'build-compile-css-'+ i;
       compileTaskSets.push(taskName);
@@ -240,14 +260,17 @@ module.exports = {
           ], {base: path.resolve( conf.buildPath +'/'+ siteConf.src ) })
           .pipe(rev())
           .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ))
-          .pipe(rev.manifest({path: 'rev-manifest-staticprefixtemp.json' }))
+          .pipe(rev.manifest({path: 'rev-manifest.json' }))
           .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ))
           .pipe(modify({
             fileModifier: function(file, contents) {
               return contents.replace(/\{\{staticPrefix\}\}/g, siteConf.staticPrefix );
             }
           }))
-          .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src +'/rev-manifest-staticprefix.json' ) ));
+          .pipe(rename({
+            suffix: '-parsed',
+          }))
+          .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ));
       });
 
 
@@ -258,14 +281,20 @@ module.exports = {
             path.normalize( conf.buildPath +'/'+ siteConf.src +'/**/*.{html,xml,txt,json,css,js}' ),
             { base: path.resolve( conf.buildPath +'/'+ siteConf.src ) }
           )
-          .pipe(revReplace({ manifest: gulp.src( path.resolve( conf.buildPath +'/'+ siteConf.src +'/rev-manifest-staticprefixtemp.json' ) ) }))
+          .pipe(revReplace({ manifest: gulp.src( path.resolve( conf.buildPath +'/'+ siteConf.src +'/rev-manifest.json' ) ) }))
           .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ));
       });
 
-      // gulp.task('build-copy-rootify', function () {
-      //   return gulp.src( path.normalize( prodConf.rootifyPath +'/**/*.*' ), { base: prodConf.rootifyPath } )
-      //     .pipe(gulp.dest( path.normalize( prodConf.buildPath + prodConf.assetsPrefix ) ));
-      // });
+      taskName = 'build-rev-parsed-'+ i;
+      revParsedTaskSets.push(taskName);
+      gulp.task(taskName, function () {
+        return gulp.src(
+            path.normalize( conf.buildPath +'/'+ siteConf.src +'/**/*.{html,xml,txt,json,css,js}' ),
+            { base: path.resolve( conf.buildPath +'/'+ siteConf.src ) }
+          )
+          .pipe(revReplace({ manifest: gulp.src( path.resolve( conf.buildPath +'/'+ siteConf.src +'/rev-manifest-parsed.json' ) ) }))
+          .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ));
+      });
 
     });
 
@@ -276,6 +305,7 @@ module.exports = {
           compileTaskSets,
           revPrepareTaskSets,
           revTaskSets,
+          revParsedTaskSets,
           // 'build-copy-rootify',
           callback
       );
