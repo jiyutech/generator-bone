@@ -1,9 +1,5 @@
 'use strict';
 
-// const _ = require('lodash');
-// const qs = require('qs');
-// const parse = require('co-body');
-
 /*
   Simple Controller Helper Object API
   c: {
@@ -15,10 +11,9 @@
   };
 */
 module.exports = function( c ){
-  return function *(){
-    // 渲染
-    this.body = yield c.render.bind(this)( __dirname +'/sample-page-2.html', {
-      'greetingsFromServerSide': 'Greetings from Koa.'
-    });
+  return function *(next){
+    // 指定请求返回类型，以配合error-handler做相应处理
+    c.logger.log('Wrapped middleware works fine.');
+    yield next;
   };
 };

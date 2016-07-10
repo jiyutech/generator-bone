@@ -19,9 +19,12 @@ module.exports = function( s ){
   s.logger.log('Hello.');
 
   const pageBase = 'app/page/';
+  const middlewareBase = 'app/server/middleware/';
 
   // # Sample
-  // 不包含server端处理的简单页面
+  // 一个 wrapped 中间件示例
+  s.router.use( s.wrap( middlewareBase +'_sample.wrapped-middleware.js') );
+  // 一个路由示例，不包含server端处理的简单页面
   s.router.all('/sample', s.render( pageBase +'_sample-page-intro/sample.html'));
   // 不包含server端处理的简单页面
   s.router.all('/sample-page-1', s.render( pageBase +'_sample-page-1/sample-page-1.html'));

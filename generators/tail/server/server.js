@@ -14,7 +14,7 @@ const projectBase = process.cwd();
       navigator: Function, // 菜单中间件
     },
   },
-  logger: like console Object, // 日志类实例
+  logger: like `console` Object, // 日志类实例
   }
 */
 module.exports = function( s ){
@@ -23,7 +23,7 @@ module.exports = function( s ){
 
   const pageBase = 'tail/page/';
 
-  // 菜单
+  // 使用bone内置中间件+配置文件，实现菜单
   s.router.use( s.middleware.navigator( require( projectBase +'/tail/config/admin-sidemenu.json' ) ) );
 
   // 页面 & API

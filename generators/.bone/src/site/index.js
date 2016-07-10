@@ -20,7 +20,7 @@ module.exports = function( siteConf ){
   const fullSiteConf = _.assign({}, conf, siteConf);
   const init = require( path.normalize( projectBase +'/'+ siteConf.server ) );
 
-  const siteLogger = new Logger( 'Site '+ siteConf.sitePrefix );
+  const siteLogger = new Logger( 'Site '+ (siteConf.sitePrefix || '/') );
 
   const controllerHelper = {
     conf: fullSiteConf,

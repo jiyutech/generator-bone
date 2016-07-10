@@ -11,7 +11,7 @@
     conf: fullSiteConf, // 配置
     request: Object, // 包装后的co-request
     render: Function, // 渲染 html
-    logger: like console Object, // 日志类实例
+    logger: like `console` Object, // 日志类实例
   };
 */
 module.exports = function( c ){
