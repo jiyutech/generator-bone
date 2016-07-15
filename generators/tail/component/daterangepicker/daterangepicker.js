@@ -142,7 +142,7 @@ module.exports = Vue.component( 'daterangepicker', {
   },
   methods: {
     setup: function(){
-      $(this.$$.calendarBtn).daterangepicker({
+      $(this.$els.calendarBtn).daterangepicker({
         timePicker: this.withTime,
         timePicker12Hour: false,
         timePickerIncrement: this.timeIncrement || 30,

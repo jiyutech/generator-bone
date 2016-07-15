@@ -12,18 +12,14 @@
   }
   .logo-bg::before {
     content: ""; display: block;
-    position: absolute; left: 5%; right: 5%; height: 35px;
+    position: absolute; left: 5%; right: 5%; height: 70px;
     background: url({{staticPrefix}}/lib/img/admin-logo-black.png) no-repeat center 0 ;
-    top: 100px;
+    background-size: contain;
+    top: 10px; margin-top: 7%;
   }
   @media (max-width: 768px) {
     .logo-bg::before {
-      top: 50px;
-    }
-  }
-  @media (max-width: 500px) {
-    .logo-bg::before {
-      background-size: contain;
+      top: 0;
     }
   }
   </style>

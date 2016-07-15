@@ -21,14 +21,16 @@ require('../../vendor/adminlte/adminlte.js');
 // });
 
 // 全局登出方法
-// window.logout = function(){
-//   return $.ajax({
-//     url: window.data.conf.ClientDCAPIBasePath+ '/operator-login',
-//     type: 'DELETE'
-//   }).done(function(){
-//     location.reload();
-//   });
-// };
+window.logout = function(){
+  // 在此实现
+  console.info('请在 tail/layout/base/base.js 中实现logout方法。');
+  // return $.ajax({
+  //   url: window.data.conf.ClientDCAPIBasePath+ '/operator-login',
+  //   type: 'DELETE'
+  // }).done(function(){
+  //   location.reload();
+  // });
+};
 
 // Global Components
 require('../../component/loading/loading.js');

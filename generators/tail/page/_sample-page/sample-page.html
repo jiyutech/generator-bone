@@ -1,0 +1,24 @@
+{% extends '../../layout/normal.html' %}
+
+{% block title %}{% parent %}{{navigator.currentNavCate.name}}{% endblock %}
+
+{% block styles %}
+  {% parent %}
+  <link rel="stylesheet" href="{{staticPrefix}}/page/_sample-list-page/sample-list-page.css">
+{% endblock %}
+
+{% block scripts %}
+  {% parent %}
+  <script src="{{staticPrefix}}/page/_sample-list-page/sample-list-page.js"></script>
+{% endblock %}
+
+{% block template %}
+{% parent %}
+{% raw %}
+
+<a href="{{sitePrefix}}/list">List Page Sample ></a>
+<br>
+<a href="{{sitePrefix}}/login">Login Sample ></a>
+
+{% endraw %}
+{% endblock %}

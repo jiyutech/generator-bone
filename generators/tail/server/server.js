@@ -26,9 +26,11 @@ module.exports = function( s ){
   // 使用bone内置中间件+配置文件，实现菜单
   s.router.use( s.middleware.navigator( require( projectBase +'/tail/config/admin-sidemenu.json' ) ) );
 
-  // 页面 & API
+  // # Sample
   s.router.all('/login', s.render( pageBase +'login/login.html'));
-  s.router.all('/', s.render( pageBase +'sample-page/sample-page.html'));
-  s.router.all('*', s.render( pageBase +'sample-page/sample-page.html'));
+  s.router.all('/', s.render( pageBase +'_sample-page/sample-page.html'));
+  s.router.all('/list', s.render( pageBase +'_sample-list-page/sample-list-page.html'));
+  s.router.all('*', s.render( pageBase +'_sample-page/sample-page.html'));
+  // /
 
 };

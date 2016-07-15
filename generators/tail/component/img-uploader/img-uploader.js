@@ -104,20 +104,22 @@ module.exports = Vue.component( 'img-uploader', {
     // 处理单图场景下，图片从外部变更时的情况
     'outputImg': {
       handler: function(){
-        if ( this.outputImg ) {
-          this.outputImgList = [this.outputImg];
+        if ( this.isSinglePic ) {
+          if ( this.outputImg ) {
+            this.outputImgList = [this.outputImg];
+          }
+          else {
+            this.outputImgList = [];
+          }
         }
-        else {
-          this.outputImgList = [];
-        }
-        this.imgObjList = [];
-        _.forEach(this.outputImgList, function( val ){
-          this.imgObjList.push({
-            id: ++cid,
-            status: 'uploaded',
-            key: val
-          });
-        }.bind(this));
+        // this.imgObjList = [];
+        // _.forEach(this.outputImgList, function( val ){
+        //   this.imgObjList.push({
+        //     id: ++cid,
+        //     status: 'uploaded',
+        //     key: val
+        //   });
+        // }.bind(this));
       }
     }
   },
@@ -152,7 +154,6 @@ module.exports = Vue.component( 'img-uploader', {
         key: val
       });
     }.bind(this));
-
     if ( this.imgRounded === undefined ) this.imgRounded = true;
   },
   attached: function(){
@@ -164,12 +165,12 @@ module.exports = Vue.component( 'img-uploader', {
       'container': this.$els.container,
       'drop_element': this.$els.container,
       'max_file_size': '100mb',
-      'flash_swf_url': window.data.sitePrefix +'/vendor/qiniu/plupload/Moxie.swf',
+      'flash_swf_url': window.data.staticPrefix +'/vendor/qiniu/plupload/Moxie.swf',
       'dragdrop': true,
       'chunk_size': '4mb',
       'unique_names': true,
       'save_key': true,
-      'uptoken_url': window.data.sitePrefix +'/qiniu-token',
+      'uptoken_url': window.data.sitePrefix +'/mch/'+ window.data.mchId +'/qiniu-token',
       'domain': this.domain,
       'auto_start': true,
       'init': {
@@ -188,7 +189,6 @@ module.exports = Vue.component( 'img-uploader', {
               o.status = 'loading';
             };
             reader.readAsDataURL(file.getNative());
-
             if ( vm.isSinglePic ) {
               vm.imgObjList = [o];
             }

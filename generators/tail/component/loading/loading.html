@@ -3,8 +3,8 @@
     <i class="fa fa-refresh fa-spin"></i>
   </div> -->
 
-  <div class="err-box alert alert-block alert-danger" v-if="isErrPopping" v-transition="toggle-error">
+  <div class="err-box alert alert-block alert-danger" v-if="isErrPopping" transition="toggle-error">
     <p>{{{errMsg}}}</p>
-    <button type="button" class="close" v-on="click: popNext">×</button>
+    <button type="button" class="close" @click="popNext">×</button>
   </div>
 </div>

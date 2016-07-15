@@ -1,0 +1,10 @@
+@import "../../layout/base/mixins.scss";
+
+/* Components Style */
+/* @import '../../component/sample/sample.scss'; */
+@import "../../vendor/adminlte/plugins/daterangepicker/daterangepicker-bs3.scss";
+@import '../../component/daterangepicker/daterangepicker.scss';
+
+.filter-box hr {
+  margin-top: 10px; margin-bottom: 10px;
+}

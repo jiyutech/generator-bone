@@ -21,7 +21,7 @@ module.exports = Vue.component( 'loading', {
       'isErrPopping': false
     };
   },
-  props: ['loading', 'error'],
+  props: ['loading', 'error', 'errorStayDuration'],
   computed: {
     'isLoading': function(){
       return _.isArray( this.loading ) ? this.loading.length : this.loading;
@@ -58,7 +58,7 @@ module.exports = Vue.component( 'loading', {
       this.isErrPopping = true;
       this.errMsg = this.error.pop();
       clearTimeout(this.errPopBuffer);
-      this.errPopBuffer = setTimeout(this.popNext.bind(this), 10000);
+      this.errPopBuffer = setTimeout(this.popNext.bind(this), this.errorStayDuration || 7000);
     }
   },
   ready: function(){

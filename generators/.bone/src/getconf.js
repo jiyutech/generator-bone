@@ -21,7 +21,7 @@ try{
   _.extend( noPrivateConfig, addonConf || {} );
   console.log('Config: 已合并`config/addon.json`配置.');
 }catch(e) {
-  console.log('Config: 未发现`config/addon.json`配置.');
+  console.log( (e+'').indexOf('Unexpected token') != -1 ? 'Config: `config/addon.json`内容格式错误' : 'Config: 未发现`config/addon.json`配置.');
 }
 
 try{
@@ -29,7 +29,7 @@ try{
   _.extend( config, privateConf || {} );
   console.log('Config: 已合并`config/private.json`配置.');
 }catch(e) {
-  console.log('Config: 未发现`config/private.json`配置.');
+  console.log( (e+'').indexOf('Unexpected token') != -1 ? 'Config: `config/private.json`内容格式错误' : 'Config: 未发现`config/private.json`配置.');
 }
 
 module.exports = function( env ){
