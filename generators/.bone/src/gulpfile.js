@@ -219,6 +219,8 @@ module.exports = {
         var fullSrcPath = path.resolve( siteConf.src );
         return gulp.src([
           path.normalize( siteConf.src +'/**/*.js' ),
+          '!'+ path.normalize( siteConf.src +'/**/*.babel.js' ),
+          '!'+ path.normalize( siteConf.src +'/**/*.jsx' ),
           '!'+ path.normalize( siteConf.src +'/**/*.server.js' ),
           '!'+ path.normalize( siteConf.src +'/server/**/*.js' ),
           '!'+ path.normalize( siteConf.src +'/vendor/**/*.js' ),
