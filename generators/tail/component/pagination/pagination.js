@@ -13,6 +13,10 @@ module.exports = Vue.component( 'pagination', {
     'pageTotal': {
       type: Number,
       default: 1
+    },
+    'hash': {
+      type: String,
+      default: ''
     }
   },
 });

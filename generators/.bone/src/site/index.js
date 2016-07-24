@@ -11,7 +11,6 @@ const request = require('./request');
 const env = require('get-env')();
 const koaStatic = require('koa-static');
 const mount = require('koa-mount');
-const Livebuilder = require('./middleware/dev-livebuild');
 const nav = require('./middleware/navigator');
 const Logger = require('../logger.js');
 
@@ -63,6 +62,7 @@ module.exports = function( siteConf ){
   // 初始化静态资源服务
   switch (env) {
     case 'dev':
+      const Livebuilder = require('./middleware/dev-livebuild');
       // 开发环境rootify中间件
       if ( siteConf.rootifyPaths && siteConf.rootifyPaths.length ) {
         siteConf.rootifyPaths.forEach(function( dir ){

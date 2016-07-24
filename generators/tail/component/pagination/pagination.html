@@ -1,13 +1,13 @@
 <div class="pagination-component">
   <ul class="pagination">
     <li :class="{ disabled: page <= 1 }">
-      <a href="#" @click="page > 1 && page--">«</a>
+      <a href="#{{hash}}" @click="page > 1 && page--">«</a>
     </li>
     <li v-for="i in pageTotal" :class="{ active: $index +1 == page }">
-      <a href="#" @click=" page = $index +1">{{$index +1}}</a>
+      <a href="#{{hash}}" @click=" page = $index +1">{{$index +1}}</a>
     </li>
     <li :class="{ disabled: page >= pageTotal }">
-      <a href="#" @click="page < pageTotal && page++">»</a>
+      <a href="#{{hash}}" @click="page < pageTotal && page++">»</a>
     </li>
   </ul>
 </div>
