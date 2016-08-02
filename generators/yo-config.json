@@ -1,0 +1,22 @@
+{
+  "update": {
+    "copyFileList": [{
+      "path": "gulpfile.js"
+    }, {
+      "path": ".bowerrc"
+    },{
+      "path": ".editorconfig"
+    },{
+      "path": ".gitattributes"
+    },{
+      "path": ".gitignore"
+    },{
+      "path": ".jshintrc"
+    },{
+      "path": "README.md"
+    },{
+      "path": ".bone",
+      "type": "directory"
+    }]
+  }
+}
