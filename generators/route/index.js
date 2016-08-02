@@ -4,6 +4,10 @@ var fs = require('fs');
 
 var Generator = module.exports = function Generator() {
   baseJs.apply(this, arguments);
+  console.log(arguments[0]);
+  this.answers = {};
+  this.answers.site = arguments[0][0];
+  this.answers.routeName = arguments[0][1];
 };
 
 util.inherits(Generator, baseJs);
@@ -18,12 +22,12 @@ Generator.prototype.initFiles = function() {
     type: 'input',
     name: 'site',
     message: 'Your site name',
-    default: 'app' // Default to current folder name
+    default: this.answers.site || 'app' // Default to current folder name
   }, {
     type: 'input',
     name: 'routeName',
     message: 'Your route name',
-    default: 'my-route' // Default to current folder name
+    default: this.answers.routeName || 'my-route' // Default to current folder name
   }, {
     type: 'list',
     name: 'type',
@@ -32,7 +36,7 @@ Generator.prototype.initFiles = function() {
   }], function(answers) {
     console.log(answers);
     addRoute.apply(this, [answers]);
-    //createFiles.apply(this, [answers]);
+    createFiles.apply(this, [answers]);
   }.bind(this));
   //this.template(this.sourceRoot() + '/demo.html',this.destinationPath() + '/demo.html');
 };
@@ -47,8 +51,6 @@ var addRoute = function(answers) {
   } else {
     templateString = templateString.replace('filePath', "'" + answers.routeName + '/' + answers.routeName + '.html' + "'");
   }
-
-  //console.log(templateString);
   var result = templateString + '\n\n' + '\t' +template[0];
   distText = distText.replace(/(\/\*{2}-{2}[\S\s]*-{2}[*]{2}(\/){1})/g, result);
   fs.writeFileSync(this.destinationPath() + '/' + answers.site + '/server/server.js', distText);
