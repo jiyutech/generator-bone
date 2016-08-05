@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/jiyutech/bone-generator.git"
+    "url": "https://github.com/jiyutech/generator-bone.git"
   },
   "keywords": [
     "yeoman-generator"
   ],
   "author": "Alexius Lee",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/jiyutech/bone-generator#readme",
+  "homepage": "https://github.com/jiyutech/generator-bone.git",
   "dependencies": {
     "inquirer": "^1.1.2",
     "yeoman-generator": "^0.21.2"
