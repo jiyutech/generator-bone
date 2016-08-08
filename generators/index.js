@@ -7,6 +7,7 @@ var MyBase = generators.Base.extend({
   },
   constructor: function() {
     // Calling the super constructor is important so our generator is correctly set up
+    console.log("this");
     generators.Base.apply(this, arguments);
     // Next, add your custom code
   }
@@ -30,7 +31,7 @@ module.exports = MyBase.extend({
     app: function() { //默认源目录就是生成器的templates目录
       console.log(this.destinationRoot());
       console.log(this.sourceRoot());
-      //this.directory('/app', './');
+      this.bulkDirectory('./', './');
     }
   }
 });
