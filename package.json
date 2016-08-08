@@ -1,6 +1,6 @@
 {
   "name": "generator-bone",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "the generator for koa by jiyu",
   "main": "index.js",
   "files": [
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/jiyutech/generator-bone.git",
   "dependencies": {
     "inquirer": "^1.1.2",
+    "lodash": "^4.14.1",
     "yeoman-generator": "^0.21.2"
   }
 }
