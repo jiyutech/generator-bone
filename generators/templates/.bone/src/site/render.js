@@ -26,6 +26,11 @@ function mixin( data, key, mixin ){
   }
 }
 
+// 避免XSS攻击
+function htmlSave( str ) {
+  return str.replace(/<[/]?script.*?>/ig, '');
+}
+
 var doRender = views( projectBase, {
   map: { html: 'swig' }
 });
@@ -44,8 +49,8 @@ module.exports = function( controllerHelper, siteConf ){
     // conf mixin
     mixin( data, 'conf', noPrivateFullSiteConfig);
     // query mixin
-    mixin( data, 'query', this.query);
-    mixin( data, 'params', this.params);
+    mixin( data, 'query', JSON.parse( htmlSave( JSON.stringify( this.query || {} ) ) ));
+    mixin( data, 'params', JSON.parse( htmlSave( JSON.stringify( this.params || {} ) ) ));
     // Middleware mixin
     mixin( data, this.renderMixin );
     // For client mvvm
