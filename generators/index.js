@@ -8,9 +8,6 @@ var MyBase = generators.Base.extend({
   constructor: function() {
     // Calling the super constructor is important so our generator is correctly set up
     generators.Base.apply(this, arguments);
-    this.hookFor('update',{
-    	args: ['update']
-    });
     // Next, add your custom code
   }
 });
@@ -30,15 +27,10 @@ module.exports = MyBase.extend({
     }.bind(this));
   },
   writing: { //生成目录结构阶段
-    app: function() { //默认源目录就是生成器的templates目录，目标目录就是执行`yo example`时所处的目录。调用this.template用Underscore模板语法去填充模板文件
+    app: function() { //默认源目录就是生成器的templates目录
       console.log(this.destinationRoot());
       console.log(this.sourceRoot());
-      // this.template('package.json', 'package.json');
-      // // this.template('_gulpfile.js', 'gulpfile.js');
-      // // this.copy('_src/less/index.less', 'src/less/index.less');
-      // this.bulkDirectory('app', 'app');
-      this.bulkDirectory('./', './');
+      //this.directory('/app', './');
     }
-  },
-
+  }
 });
