@@ -7,7 +7,6 @@
 const env = require('get-env')();
 const logger = env === 'dev' ? require('koa-logger') : require('koa-accesslog');
 const koa = require('koa');
-// const koaStatic = require('koa-static');
 // const session = require('koa-session');
 const app = koa();
 const mount = require('koa-mount');

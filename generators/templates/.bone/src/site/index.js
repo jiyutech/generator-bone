@@ -9,7 +9,7 @@ const conf = require('../getconf.js')();
 const Render = require('./render');
 const request = require('./request');
 const env = require('get-env')();
-const koaStatic = require('koa-static');
+const koaStaticCache = require('koa-static-cache');
 const mount = require('koa-mount');
 const nav = require('./middleware/navigator');
 const Logger = require('../logger.js');
@@ -66,7 +66,9 @@ module.exports = function( siteConf ){
       // 开发环境rootify中间件
       if ( siteConf.rootifyPaths && siteConf.rootifyPaths.length ) {
         siteConf.rootifyPaths.forEach(function( dir ){
-          site.app.use(mount('/', koaStatic( dir )));
+          site.app.use(koaStaticCache( dir, {
+            prefix: ''
+          }));
         });
       }
       // 开发环境 Static Server
@@ -96,7 +98,9 @@ module.exports = function( siteConf ){
 
       // 开发环境 Static Server
       [ siteConf.src ].forEach(function( path ){
-        site.app.use(mount(siteConf.staticPrefix, koaStatic( path ), {}));
+        site.app.use(koaStaticCache(path, {
+          prefix: siteConf.staticPrefix
+        }));
       });
 
       break;
@@ -104,7 +108,8 @@ module.exports = function( siteConf ){
 
       // 生产环境 Static Server
       [ path.normalize( conf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}' ) ].forEach(function( path ){
-        site.app.use(mount(siteConf.staticPrefix, koaStatic( path ), {
+        site.app.use(koaStaticCache(path, {
+          prefix: siteConf.staticPrefix,
           maxage: 31536000000
         }));
       });
