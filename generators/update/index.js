@@ -27,9 +27,9 @@ var updateTask = function() {
   config = config['update'];
   _.forEach(config.copyFileList, function(v) {
     if (v.type === 'directory') {
-      yeoman.generators.Base.prototype.bulkDirectory.apply(this, [v.path, v.path]);
+      yeoman.generators.Base.prototype.bulkDirectory.apply(this, [v.path, v.dist || v.path]);
     } else {
-      yeoman.generators.Base.prototype.copy.apply(this, [v.path, v.path]);
+      yeoman.generators.Base.prototype.copy.apply(this, [v.path, v.dist || v.path]);
     }
   }.bind(this));
   var destinationPath = this.destinationPath();

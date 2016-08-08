@@ -7,7 +7,6 @@ var MyBase = generators.Base.extend({
   },
   constructor: function() {
     // Calling the super constructor is important so our generator is correctly set up
-    console.log("this");
     generators.Base.apply(this, arguments);
     // Next, add your custom code
   }
@@ -29,9 +28,15 @@ module.exports = MyBase.extend({
   },
   writing: { //生成目录结构阶段
     app: function() { //默认源目录就是生成器的templates目录
-      console.log(this.destinationRoot());
-      console.log(this.sourceRoot());
-      this.bulkDirectory('./', './');
+      this.bulkDirectory('./.bone', './.bone');
+      this.bulkDirectory('./app', './app');
+      this.bulkDirectory('./config', './config');
+      this.bulkDirectory('./tail', './tail');
+      this.copy('./gitignore', './.gitignore');
+      this.copy('./gulpfile.js', './gulpfile.js');
+      this.copy('./package.json', './package.json');
+      this.copy('./README.md', './README.md');
+      this.fs.copy(this.templatePath('./.*'), './');
     }
   }
 });
