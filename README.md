@@ -21,6 +21,7 @@ yo bone
 
 ## Generators
 * [bone:update](#update)
+
 ### update
 ```
 yo bone:update
