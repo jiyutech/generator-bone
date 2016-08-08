@@ -38,5 +38,9 @@ module.exports = function( s ){
 
   // 从删除这条配置开始
   s.router.redirect('/', '/sample');
+  
+
+
+  /**--s.router.all(urlName, s.render( pageBase + filePath ));--**/
 
 };
