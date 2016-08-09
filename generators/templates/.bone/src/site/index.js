@@ -22,6 +22,7 @@ module.exports = function( siteConf ){
   const siteLogger = new Logger( 'Site '+ (siteConf.sitePrefix || '/') );
 
   const controllerHelper = {
+    env: env,
     conf: fullSiteConf,
     request: request,
     render: null, // 将在Render中被完善
@@ -34,6 +35,7 @@ module.exports = function( siteConf ){
   const render = new Render( controllerHelper, siteConf );
 
   const site = {
+    env: env,
     app: koa(),
     conf: fullSiteConf,
     router: new Router({
