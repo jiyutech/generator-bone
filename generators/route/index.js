@@ -32,7 +32,7 @@ Generator.prototype.initFiles = function() {
   }], function(answers) {
     console.log(answers);
     addRoute.apply(this, [answers]);
-    //createFiles.apply(this, [answers]);
+    createFiles.apply(this, [answers]);
   }.bind(this));
   //this.template(this.sourceRoot() + '/demo.html',this.destinationPath() + '/demo.html');
 };
@@ -49,38 +49,33 @@ var addRoute = function(answers) {
   }
 
   //console.log(templateString);
-  var result = templateString + '\n\n' + '\t' +template[0];
+  var result = templateString + '\n\n' + '\t' + template[0];
   distText = distText.replace(/(\/\*{2}-{2}[\S\s]*-{2}[*]{2}(\/){1})/g, result);
   fs.writeFileSync(this.destinationPath() + '/' + answers.site + '/server/server.js', distText);
 };
 
 var createFiles = function(answers) {
   console.log(answers);
+  answers.useVuejs = false;
   this.template(
-    this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-1/sample-page-1.scss',
+    this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.scss',
     this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.scss',
     answers);
   if (answers.type === 'server page' || answers.type === 'server + vue page') {
     this.template(
-      this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-2/sample-page-2.server.js',
+      this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.server.js',
       this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.server.js',
       answers);
   }
   if (answers.type === 'vue page' || answers.type === 'server + vue page') {
+    answers.useVuejs = true;
     this.template(
-      this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-3/sample-page-3.html',
-      this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.html',
-      answers);
-    this.template(
-      this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-3/sample-page-3.js',
+      this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.js',
       this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.js',
       answers);
-  } else {
-    this.template(
-      this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-1/sample-page-1.html',
-      this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.html',
-      answers);
   }
-
-
+  this.template(
+    this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.html',
+    this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.html',
+    answers);
 };

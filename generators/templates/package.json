@@ -1,5 +1,5 @@
 {
-  "name": "Bone-Example",
+  "name": "<%= pkgName %>",
   "version": "1.0.0",
   "boneVersion": "1.2.5",
   "private": true,

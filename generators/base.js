@@ -13,12 +13,6 @@ var Generator = module.exports = function Generator() {
   var sourceRoot = path.join(__dirname, '/templates');
   this.sourceRoot(sourceRoot);
   var destinationPath = this.destinationPath();
-  
-
-  // var sourceRoot = path.join(__dirname, '/templates');
-  // var destinationPath = this.destinationPath();
-  // console.log(sourceRoot);
-  // console.log(destinationPath);
 };
 
 util.inherits(Generator, yeoman.generators.NamedBase);

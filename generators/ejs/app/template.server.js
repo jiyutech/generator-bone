@@ -17,7 +17,7 @@
 module.exports = function( c ){
   return function *(){
     // 渲染
-    this.body = yield c.render.bind(this)( __dirname +'/_sample-page-2.html', {
+    this.body = yield c.render.bind(this)( __dirname +'/<%= routeName %>.html', {
       'greetingsFromServerSide': 'Greetings from Koa.'
     });
   };

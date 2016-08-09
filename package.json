@@ -1,26 +1,29 @@
 {
   "name": "generator-bone",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.11",
+  "description": "the generator for koa by jiyu",
   "main": "index.js",
   "files": [
-    "generators/app"
+    "generators",
+    ".npmignore",
+    ".gitignore"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/jiyutech/bone-generator.git"
+    "url": "https://github.com/jiyutech/generator-bone.git"
   },
   "keywords": [
     "yeoman-generator"
   ],
   "author": "Alexius Lee",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/jiyutech/bone-generator#readme",
+  "homepage": "https://github.com/jiyutech/generator-bone.git",
   "dependencies": {
     "inquirer": "^1.1.2",
+    "lodash": "^4.14.1",
     "yeoman-generator": "^0.21.2"
   }
 }
