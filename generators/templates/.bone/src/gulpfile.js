@@ -30,6 +30,9 @@ var devConf = require('./getconf.js')('dev');
 
 var sitePrefixTemplate = '{{staticPrefix}}';
 
+var boneConf = require('./bone-config');
+var buildPath = boneConf.buildPath;
+
 /*
   Batch Normalize Pathes
   ---
@@ -89,6 +92,7 @@ module.exports = {
           '/**/*.html',
         ]),
       ], function( args ){
+        console.error('Reload Server.');
         server.start().done(function(){
           setTimeout(function(){
             livereload.changed( args.path );
@@ -100,6 +104,7 @@ module.exports = {
       gulp.watch([
         resolveBySites([ '/**/*.scss', '/**/*.sass' ]),
       ], function( args ){
+        console.error('Reload CSS.');
         livereload.changed( args.path.replace(/.s[ca]ss$/i,'.css') );
       });
 
@@ -116,6 +121,7 @@ module.exports = {
           '/**/*.sass',
         ]),
       ], function( args ){
+        console.error('Reload Browser.');
         livereload.changed( args.path );
       });
 
@@ -142,7 +148,7 @@ module.exports = {
     */
     gulp.task('clean', function(done){
       return $.cache.clearAll(function(){
-        require('del').bind(null, [ conf.buildPath ])(done);
+        require('del').bind(null, [ buildPath ])(done);
       });
     });
 
@@ -164,7 +170,7 @@ module.exports = {
           '!'+ path.normalize( siteConf.src +'/**/*.sass' ),
         ])
         .pipe(gulp.dest(
-          path.normalize( conf.buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate )
+          path.normalize( buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate )
         ));
       });
 
@@ -178,7 +184,7 @@ module.exports = {
               path.normalize( rootifyPath +'/**/*' ),
             ], { base: rootifyPath } )
             .pipe(gulp.dest(
-              path.normalize( conf.buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate )
+              path.normalize( buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate )
             ));
           });
         });
@@ -207,7 +213,7 @@ module.exports = {
           .on('error', notify.onError('CSS csso Error'))
           .on('error', function( e ){ gutil.log(e.stack); })
           .pipe(gulp.dest(
-            path.normalize( conf.buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate )
+            path.normalize( buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate )
           ));
       });
 
@@ -215,7 +221,7 @@ module.exports = {
       compileTaskSets.push(taskName);
       gulp.task(taskName, function () {
         var FILE_SPLIT_REG = /^(.+?)(([^\/]+?)(?:\.([^.]+))?)$/;
-        var fullBuildPath = path.resolve( path.normalize( conf.buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate ) );
+        var fullBuildPath = path.resolve( path.normalize( buildPath +'/'+ siteConf.src +'/'+ sitePrefixTemplate ) );
         var fullSrcPath = path.resolve( siteConf.src );
         return gulp.src([
           path.normalize( siteConf.src +'/**/*.js' ),
@@ -258,12 +264,12 @@ module.exports = {
       revPrepareTaskSets.push(taskName);
       gulp.task(taskName, function () {
         return gulp.src([
-            path.normalize( conf.buildPath +'/'+ siteConf.src +'/**/*.*' ),
-          ], {base: path.resolve( conf.buildPath +'/'+ siteConf.src ) })
+            path.normalize( buildPath +'/'+ siteConf.src +'/**/*.*' ),
+          ], {base: path.resolve( buildPath +'/'+ siteConf.src ) })
           .pipe(rev())
-          .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ))
+          .pipe(gulp.dest( path.normalize( buildPath +'/'+ siteConf.src ) ))
           .pipe(rev.manifest({path: 'rev-manifest.json' }))
-          .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ))
+          .pipe(gulp.dest( path.normalize( buildPath +'/'+ siteConf.src ) ))
           .pipe(modify({
             fileModifier: function(file, contents) {
               return contents.replace(/\{\{staticPrefix\}\}/g, siteConf.staticPrefix );
@@ -272,7 +278,7 @@ module.exports = {
           .pipe(rename({
             suffix: '-parsed',
           }))
-          .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ));
+          .pipe(gulp.dest( path.normalize( buildPath +'/'+ siteConf.src ) ));
       });
 
 
@@ -280,22 +286,22 @@ module.exports = {
       revTaskSets.push(taskName);
       gulp.task(taskName, function () {
         return gulp.src(
-            path.normalize( conf.buildPath +'/'+ siteConf.src +'/**/*.{html,xml,txt,json,css,js}' ),
-            { base: path.resolve( conf.buildPath +'/'+ siteConf.src ) }
+            path.normalize( buildPath +'/'+ siteConf.src +'/**/*.{html,xml,txt,json,css,js}' ),
+            { base: path.resolve( buildPath +'/'+ siteConf.src ) }
           )
-          .pipe(revReplace({ manifest: gulp.src( path.resolve( conf.buildPath +'/'+ siteConf.src +'/rev-manifest.json' ) ) }))
-          .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ));
+          .pipe(revReplace({ manifest: gulp.src( path.resolve( buildPath +'/'+ siteConf.src +'/rev-manifest.json' ) ) }))
+          .pipe(gulp.dest( path.normalize( buildPath +'/'+ siteConf.src ) ));
       });
 
       taskName = 'build-rev-parsed-'+ i;
       revParsedTaskSets.push(taskName);
       gulp.task(taskName, function () {
         return gulp.src(
-            path.normalize( conf.buildPath +'/'+ siteConf.src +'/**/*.{html,xml,txt,json,css,js}' ),
-            { base: path.resolve( conf.buildPath +'/'+ siteConf.src ) }
+            path.normalize( buildPath +'/'+ siteConf.src +'/**/*.{html,xml,txt,json,css,js}' ),
+            { base: path.resolve( buildPath +'/'+ siteConf.src ) }
           )
-          .pipe(revReplace({ manifest: gulp.src( path.resolve( conf.buildPath +'/'+ siteConf.src +'/rev-manifest-parsed.json' ) ) }))
-          .pipe(gulp.dest( path.normalize( conf.buildPath +'/'+ siteConf.src ) ));
+          .pipe(revReplace({ manifest: gulp.src( path.resolve( buildPath +'/'+ siteConf.src +'/rev-manifest-parsed.json' ) ) }))
+          .pipe(gulp.dest( path.normalize( buildPath +'/'+ siteConf.src ) ));
       });
 
     });

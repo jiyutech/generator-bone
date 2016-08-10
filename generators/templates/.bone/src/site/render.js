@@ -12,6 +12,7 @@ const getconf = require('../getconf.js');
 // const conf = getconf();
 const noPrivateConfig = getconf.noPrivate();
 const pkgInfo = _.pick( require( projectBase +'/package.json'), ['name', 'version', 'boneVersion']);
+const boneConf = require('../bone-config');
 
 
 function mixin( data, key, mixin ){
@@ -61,7 +62,7 @@ module.exports = function( controllerHelper, siteConf ){
     // 非开发环境使用build后的html
     if ( env != 'dev' ) {
       viewPath = path.normalize(
-        controllerHelper.conf.buildPath +'/'+ siteConf.src +'/{{staticPrefix}}/'+
+        boneConf.buildPath +'/'+ siteConf.src +'/{{staticPrefix}}/'+
         viewPath.slice( siteConf.src.length )
       );
     }

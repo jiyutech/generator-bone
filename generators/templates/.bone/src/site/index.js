@@ -13,6 +13,7 @@ const koaStaticCache = require('koa-static-cache');
 const mount = require('koa-mount');
 const nav = require('./middleware/navigator');
 const Logger = require('../logger.js');
+const boneConf = require('../bone-config.js');
 
 module.exports = function( siteConf ){
 
@@ -109,7 +110,7 @@ module.exports = function( siteConf ){
     default:
 
       // 生产环境 Static Server
-      [ path.normalize( conf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}' ) ].forEach(function( path ){
+      [ path.normalize( boneConf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}' ) ].forEach(function( path ){
         site.app.use(koaStaticCache(path, {
           prefix: siteConf.staticPrefix,
           maxage: 31536000000
