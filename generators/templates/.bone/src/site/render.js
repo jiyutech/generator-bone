@@ -6,7 +6,9 @@ const path = require('path');
 
 const views = require('co-views');
 const _ = require('lodash');
-const env = require('get-env')();
+const env = require('get-env')({
+  test: ['test', 'testing']
+});
 
 const getconf = require('../getconf.js');
 // const conf = getconf();

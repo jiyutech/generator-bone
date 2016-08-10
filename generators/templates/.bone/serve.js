@@ -4,7 +4,9 @@
 // const path = require('path');
 // const vfs = require('vinyl-fs');
 // const map = require('map-stream');
-const env = require('get-env')();
+const env = require('get-env')({
+  test: ['test', 'testing']
+});
 const logger = env === 'dev' ? require('koa-logger') : require('koa-accesslog');
 const koa = require('koa');
 // const session = require('koa-session');

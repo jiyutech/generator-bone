@@ -8,7 +8,9 @@ const Router = require('koa-router');
 const conf = require('../getconf.js')();
 const Render = require('./render');
 const request = require('./request');
-const env = require('get-env')();
+const env = require('get-env')({
+  test: ['test', 'testing']
+});
 const koaStaticCache = require('koa-static-cache');
 const mount = require('koa-mount');
 const nav = require('./middleware/navigator');
