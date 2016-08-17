@@ -4,9 +4,7 @@
 // const path = require('path');
 // const vfs = require('vinyl-fs');
 // const map = require('map-stream');
-const env = require('get-env')({
-  test: ['test', 'testing']
-});
+const env = require('get-env')();
 const logger = env === 'dev' ? require('koa-logger') : require('koa-accesslog');
 const koa = require('koa');
 // const session = require('koa-session');
@@ -41,6 +39,6 @@ router.all('/bone-debug', require('./src/debug-page.js'));
 app.use(router.routes())
     .use(router.allowedMethods());
 
-
-module.exports = app.listen( conf.port );
-boneLogger.info(pkgInfo.name +'@'+ pkgInfo.version +' runing on port '+ conf.port + ' in `'+ env +'` mode');
+var port = process.env.PORT || conf.port;
+module.exports = app.listen( port );
+boneLogger.info(pkgInfo.name +'@'+ pkgInfo.version +' runing on port '+ port + ' in `'+ env +'` mode');
