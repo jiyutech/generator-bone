@@ -124,7 +124,7 @@ module.exports = Vue.component('selectplus-multi', {
   },
   watch: {
     'seach':'each',
-    //  'value':'getSelectValue',
+
   },
   beforeCompile:function(){
     this.each();
@@ -132,9 +132,7 @@ module.exports = Vue.component('selectplus-multi', {
     // this.match();
   },
   ready: function() {
-    // new Select2( $('select'), {
-    //
-    // });
+
     this.dropDown = 'none';
     document.addEventListener('click',function(event){
       var ele = event.target;
