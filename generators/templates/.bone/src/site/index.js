@@ -14,6 +14,7 @@ const env = require('get-env')({
 const koaStaticCache = require('koa-static-cache');
 const mount = require('koa-mount');
 const nav = require('./middleware/navigator');
+const responseType = require('./middleware/response-type');
 const Logger = require('../logger.js');
 const boneConf = require('../bone-config.js');
 
@@ -49,6 +50,7 @@ module.exports = function( siteConf ){
     request: request,
     middleware: {
       navigator: nav,
+      responseType: responseType,
     },
     logger: siteLogger,
   };
