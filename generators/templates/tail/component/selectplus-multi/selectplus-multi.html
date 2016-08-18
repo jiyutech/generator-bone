@@ -1,0 +1,23 @@
+
+<div class="checkbox-oa" id="component">
+  <div class="check-box">
+    <div v-for="tag in selectValue" class="tag">
+      <span @click="value.splice($index,1),selectValue.splice($index,1)">×</span>
+      <span>{{tag[labelKey]}}</span>
+    </div>
+    <input class="input" type="text" v-model="seach" @focus="showDropDown()" size="{{seach.length}}" maxlength="20">
+  </div>
+
+  <div class="drop-down" :style="{'display':dropDown}">
+
+      <ul>
+        <li v-for="option in seachOptions" @click="changeSelectValue(option)" :style="{'background-color':isSelected[$index]}">
+        <span  class="fa" :class="{'fa-check-square-o':isSelected[$index]=='#e8e8e8','fa-square-o':isSelected[$index]!='#e8e8e8'}" v-if="(typeof seachOptions[0] )== 'object'"></span>
+        <span>{{option[labelKey]}}</span></li>
+      </ul>
+      <div class="text-left">
+        <a @click="chooseAll()" href="javascript:;">全选</a>
+        <a @click="invertSelect()" href="javascript:;">反选</a>
+      </div>
+  </div>
+</div>
