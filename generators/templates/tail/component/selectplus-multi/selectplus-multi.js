@@ -125,7 +125,7 @@ module.exports = Vue.component('selectplus-multi', {
   },
   watch: {
     'seach':'each',
-    //  'value':'getSelectValue',
+    'value':'getSelectValue',
   },
   beforeCompile:function(){
     this.each();
