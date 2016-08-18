@@ -7,7 +7,7 @@
     background-color: #fff;
     padding:5px 4px 0 4px;
     margin: 0;
-    height: 34px;
+    min-height: 34px;
     input {
       padding-left: 6px;
       border: 1px solid #3C8DBC;
@@ -23,11 +23,10 @@
       height: 23px;
       line-height: 23px;
       background-color: #3C8DBC;
-      border-radius: 5px;
+      border-radius: 3px;
       margin:0 4px 4px 0;
       span:nth-of-type(1){
         position: relative;
-        top: -1px;
         color: #e2e2e2;
         cursor: pointer;
         margin: 0 8px;
@@ -37,7 +36,7 @@
         }
       }
       span:nth-of-type(2){
-        font-size: 14px;
+        font-size: 12px;
       }
     }
   }
@@ -56,6 +55,8 @@
       }
     }
     ul {
+      overflow: scroll;
+      height: 300px;
       margin: 0;
       padding: 0;
       li {
@@ -72,7 +73,7 @@
           color: #fff;
         }
         span:nth-of-type(2){
-          margin-left: 33px;
+          margin-left: 23px;
         }
         span:nth-of-type(1){
           position: absolute;

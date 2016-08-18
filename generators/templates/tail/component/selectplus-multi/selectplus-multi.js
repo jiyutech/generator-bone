@@ -112,19 +112,20 @@ module.exports = Vue.component('selectplus-multi', {
       // this.match();
     },
     getSelectValue:function(){
+      var temp = [];
       for (var i = 0; i < this.value.length; i++) {
         for (var k = 0; k < this.options.length; k++) {
           if (this.options[k][this.valueKey] == this.value[i]) {
-              this.selectValue[i] = this.options[k];
+              temp.push(this.options[k]);
           }
         }
       }
-
+      this.selectValue = temp;
     }
   },
   watch: {
     'seach':'each',
-
+    'value':'getSelectValue',
   },
   beforeCompile:function(){
     this.each();
@@ -132,7 +133,9 @@ module.exports = Vue.component('selectplus-multi', {
     // this.match();
   },
   ready: function() {
-
+    // new Select2( $('select'), {
+    //
+    // });
     this.dropDown = 'none';
     document.addEventListener('click',function(event){
       var ele = event.target;
