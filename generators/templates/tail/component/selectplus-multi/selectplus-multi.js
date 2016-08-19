@@ -14,7 +14,10 @@ module.exports = Vue.component('selectplus-multi', {
         selectValue:[],
         seach:'',
         seachOptions:[],
-        isSelected:[]
+        isSelected:[],
+        inputBorder:'0',
+        placeHolder:'',
+        inputWidth:'100',
     };
   },
   props: {
@@ -30,6 +33,9 @@ module.exports = Vue.component('selectplus-multi', {
     labelKey:{
       type:String
     },
+    placeholder:{
+      type:String
+    }
   },
   computed: {
     isSelected:function(){
@@ -46,8 +52,8 @@ module.exports = Vue.component('selectplus-multi', {
         }
       }
       return temp;
+    },
 
-    }
   },
   methods: {
     chooseAll:function(){
@@ -57,7 +63,7 @@ module.exports = Vue.component('selectplus-multi', {
         this.value = temp;
       }
       this.selectValue = this.seachOptions.slice(0);
-
+      this.getFoucus();
     },
     invertSelect:function(){
       var temp = this.value.slice(0);
@@ -69,6 +75,19 @@ module.exports = Vue.component('selectplus-multi', {
             this.selectValue.splice(k,1);
           }
         }
+      }
+      this.dropDown = 'block';
+      this.seach = '';
+      this.inputBorder = 1;
+      //exist value
+      if (this.value.length > 0) {
+        this.inputWidth = 10;
+        this.placeHolder = '';
+      }
+      //not exist value
+      else {
+        this.placeHolder = this.placeholder;
+        this.inputWidth = 100;
       }
     },
     changeSelectValue:function(option){
@@ -82,14 +101,38 @@ module.exports = Vue.component('selectplus-multi', {
       }
       this.value.push(option[this.valueKey]);
       this.selectValue.push(option);
+      this.getFoucus();
     },
-    showDropDown:function(){
-      if (this.dropDown =='none') {
+    getFoucus:function(){
+      this.$el.getElementsByTagName('input')[0].focus();
+    },
+    inputFocus:function(){
         this.dropDown = 'block';
         this.seach = '';
-        if (this.seachOptions.length === 0) {
-          this.dropDown = 'none';
+        this.inputBorder = 1;
+        //exist value
+        if (this.value.length > 0) {
+          this.inputWidth = 10;
+          this.placeHolder = '';
         }
+        //not exist value
+        else {
+          this.placeHolder = this.placeholder;
+          this.inputWidth = 100;
+        }
+        if (this.seachOptions.length === 0) {
+
+        }
+    },
+    inputBlur:function(){
+      this.inputBorder = 0;
+      if (this.value.length !== 0) {
+        this.placeHolder = '';
+        this.inputWidth = 10;
+      }
+      else {
+        this.placeHolder = this.placeholder;
+        this.inputWidth = 100;
       }
     },
     each:function(){
@@ -108,10 +151,10 @@ module.exports = Vue.component('selectplus-multi', {
         temp[0] = this.seach;
       }
       this.seachOptions = temp;
-      //标签过滤
-      // this.match();
     },
     getSelectValue:function(){
+      //有标签的情况
+
       var temp = [];
       for (var i = 0; i < this.value.length; i++) {
         for (var k = 0; k < this.options.length; k++) {
@@ -130,23 +173,24 @@ module.exports = Vue.component('selectplus-multi', {
   beforeCompile:function(){
     this.each();
     this.getSelectValue();
-    // this.match();
   },
   ready: function() {
-    // new Select2( $('select'), {
-    //
-    // });
+    this.placeHolder = this.placeholder;
     this.dropDown = 'none';
     document.addEventListener('click',function(event){
       var ele = event.target;
-      var component = document.getElementById('component');
-      if (component.compareDocumentPosition(ele) !== 20) {
-        if (component.compareDocumentPosition(ele) !== 35) {
-          if (component.compareDocumentPosition(ele) !== 37) {
-            this.dropDown = 'none';
-          }
+      var component = this.$el;
+      while (ele != document.body) {
+        if (ele.parentNode == component) {
+          this.dropDown = 'block';
+          break;
+        }
+        else {
+          ele = ele.parentNode;
+          this.dropDown = 'none';
+
         }
       }
-    }.bind(this));
+    }.bind(this),true);
   }
 });
