@@ -10,7 +10,7 @@
 
   <div class="drop-down" :style="{'display':dropDown}">
       <ul>
-        <li v-for="option in seachOptions" @click="changeSelectValue(option)" :style="{'background-color':isSelected[$index]}" >
+        <li v-for="option in seachOptions" @click="changeSelectValue(option),getFoucus()" :style="{'background-color':isSelected[$index]}" >
         <span  class="fa" :class="{'fa-check-square-o':isSelected[$index]=='#e8e8e8','fa-square-o':isSelected[$index]!='#e8e8e8'}" v-if="(typeof seachOptions[0] )== 'object'"></span>
         <span>{{option[labelKey]}}</span></li>
       </ul>
