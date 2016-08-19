@@ -89,6 +89,9 @@ module.exports = Vue.component('selectplus-multi', {
         this.placeHolder = this.placeholder;
         this.inputWidth = 100;
       }
+      if (this.seachOptions.length === 0) {
+
+      }
     },
     changeSelectValue:function(option){
       for (var i = 0; i < this.value.length; i++) {
@@ -101,7 +104,6 @@ module.exports = Vue.component('selectplus-multi', {
       }
       this.value.push(option[this.valueKey]);
       this.selectValue.push(option);
-      this.getFoucus();
     },
     getFoucus:function(){
       this.$el.getElementsByTagName('input')[0].focus();
@@ -154,7 +156,7 @@ module.exports = Vue.component('selectplus-multi', {
     },
     getSelectValue:function(){
       //有标签的情况
-
+      this.getFoucus();
       var temp = [];
       for (var i = 0; i < this.value.length; i++) {
         for (var k = 0; k < this.options.length; k++) {
