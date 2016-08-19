@@ -1,17 +1,16 @@
 
-<div class="component-selectplusmulti" id="component">
-  <div class="check-box">
+<div class="component-selectplusmulti">
+  <div class="check-box" @click="getFoucus()">
     <div v-for="tag in selectValue" class="tag">
-      <span @click="value.splice($index,1),selectValue.splice($index,1)">×</span>
+      <span @click="value.splice($index,1),selectValue.splice($index,1),getFoucus()">×</span>
       <span>{{tag[labelKey]}}</span>
     </div>
-    <input class="input" type="text" v-model="seach" @focus="showDropDown()" size="{{seach.length}}" maxlength="20">
+    <input v-model="seach" @focus="inputFocus()" size="{{2*seach.length}}" maxlength="20" :placeholder="placeHolder" :style="{'border-width':inputBorder+'px','width':inputWidth+'%'}" @blur="inputBlur()" >
   </div>
 
   <div class="drop-down" :style="{'display':dropDown}">
-
       <ul>
-        <li v-for="option in seachOptions" @click="changeSelectValue(option)" :style="{'background-color':isSelected[$index]}">
+        <li v-for="option in seachOptions" @click="changeSelectValue(option)" :style="{'background-color':isSelected[$index]}" >
         <span  class="fa" :class="{'fa-check-square-o':isSelected[$index]=='#e8e8e8','fa-square-o':isSelected[$index]!='#e8e8e8'}" v-if="(typeof seachOptions[0] )== 'object'"></span>
         <span>{{option[labelKey]}}</span></li>
       </ul>
