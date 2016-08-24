@@ -3,9 +3,12 @@
     <li :class="{ disabled: page <= 1 }">
       <a href="#{{hash}}" @click="page > 1 && page--">«</a>
     </li>
-    <li v-for="i in pageTotal" :class="{ active: $index +1 == page }">
-      <a href="#{{hash}}" @click=" page = $index +1">{{$index +1}}</a>
+
+    <li v-for="i in pageTotal" v-if="i == 0 || (Math.abs(i-page) <= ignoreNum) || i == pageTotal-1" :class="{ active: $index +1 == page }">
+      <span v-if="Math.abs(i-page) == ignoreNum">...</span>
+      <a v-else href="#{{hash}}" @click=" page = $index +1">{{$index +1}}</a>
     </li>
+
     <li :class="{ disabled: page >= pageTotal }">
       <a href="#{{hash}}" @click="page < pageTotal && page++">»</a>
     </li>
