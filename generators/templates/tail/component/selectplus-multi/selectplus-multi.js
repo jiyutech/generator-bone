@@ -3,9 +3,6 @@ var Vue = window.Vue;
 var $ = window.$;
 // var Select2 = require('select2');
 
-
-
-
 module.exports = Vue.component('selectplus-multi', {
   template: require('./selectplus-multi.html'),
   replace: false,
@@ -47,10 +44,12 @@ module.exports = Vue.component('selectplus-multi', {
       type: String
     },
     noResult: {
-      type: String
+      type: String,
+      default:'无结果'
     },
     dropDownHeight: {
-      type: String
+      type: String,
+      default:'300px'
     }
   },
   computed: {
@@ -68,8 +67,6 @@ module.exports = Vue.component('selectplus-multi', {
       }
       return temp;
     },
-
-
   },
   methods: {
     toTopDistance: function() {
