@@ -1,20 +1,21 @@
 
 <div class="component-selectplusmulti">
-  <div class="check-box" @click="getFoucus()">
-    <div v-for="tag in selectValue" class="tag">
-      <span @click="value.splice($index,1),selectValue.splice($index,1),getFoucus()">×</span>
-      <span>{{tag[labelKey]}}</span>
+  <div class="check-box" >
+    <div v-for="tag in selectValue" class="tag" >
+      <span @click="value.splice($index,1),selectValue.splice($index,1)">×</span>
+      <span class="tagName">{{tag[labelKey]}}</span>
     </div>
-    <input v-model="seach" @focus="inputFocus()" size="{{2*seach.length}}" maxlength="20" :placeholder="placeHolder" :style="{'border-width':inputBorder+'px','width':inputWidth+'%'}" @blur="inputBlur()" >
+    <input v-model="seach" @focus="inputFocus()" size="{{2*seach.length}}" maxlength="20" :placeholder="placeHolder" :style="{'border-width':inputBorder+'px','width':inputWidth+'%'}"  v-if="outComponent !== 1">
+    <span v-if="outPlaceHolder == 1">{{placeholder}}</span>
   </div>
 
-  <div class="drop-down" :style="{'display':dropDown}">
-      <ul>
-        <li v-for="option in seachOptions" @click="changeSelectValue(option),getFoucus()" :style="{'background-color':isSelected[$index]}" >
-        <span  class="fa" :class="{'fa-check-square-o':isSelected[$index]=='#e8e8e8','fa-square-o':isSelected[$index]!='#e8e8e8'}" v-if="(typeof seachOptions[0] )== 'object'"></span>
+  <div class="drop-down" :style="{'display':dropDown,'top':dropDownTop+'px'}" :class="{'showUp':showUpClass,'showDown':showDownClass}">
+      <ul :style="{'max-height':dropDownHeight}">
+        <li v-for="option in seachOptions" @click="changeSelectValue(option)" :style="{'background-color':isSelected[$index]}" :class="{'hasResult':hasResultClass,'noResult':noResultClass}">
+        <span  class="fa" :class="{'fa-check-square-o':isSelected[$index]=='#e8e8e8','fa-square-o':isSelected[$index]!='#e8e8e8'}" v-if="seachOptions[0][labelKey] !== noResult"></span>
         <span>{{option[labelKey]}}</span></li>
       </ul>
-      <div class="text-left">
+      <div class="text-left" v-if="noResultClass !== true">
         <a @click="chooseAll()" href="javascript:;">全选</a>
         <a @click="invertSelect()" href="javascript:;">反选</a>
       </div>
