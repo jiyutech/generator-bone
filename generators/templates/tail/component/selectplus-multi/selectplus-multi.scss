@@ -57,6 +57,7 @@
     background-color: #fff;
     border: 1px solid #ddd;
     z-index: 10000000;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
     >div:nth-of-type(1){
       height: 29px;
       background-color: #fff;
@@ -66,7 +67,7 @@
       }
     }
     ul {
-      overflow: scroll;
+      overflow: auto;
       margin: 0;
       padding: 0;
       li {
