@@ -1,33 +1,29 @@
 'use strict';
 var Vue = window.Vue;
 var $ = window.$;
-// var Select2 = require('select2');
-
-
-
+var _ = window._;
 
 module.exports = Vue.component('selectplus-multi', {
   template: require('./selectplus-multi.html'),
   replace: false,
   data: function() {
     return {
-      dropDown: 'none',
+      showDropDown: false,
       selectValue: [],
       seach: '',
       seachOptions: [],
-      isSelected: [],
+      selectOptions: [],
       inputBorder: '0',
       placeHolder: '',
       inputWidth: '100',
       outComponent: '0',
       hasResultClass: true,
       noResultClass: false,
-      outPlaceHolder: '0',
       showUpClass: false,
       showDownClass: true,
-      dropDownTop: '',
+      isDropDownFlipped: false,
       checkBoxHeight: '',
-      compHeight: '',
+      // compHeight: '',
     };
   },
   props: {
@@ -47,14 +43,16 @@ module.exports = Vue.component('selectplus-multi', {
       type: String
     },
     noResult: {
-      type: String
+      type: String,
+      default: '无结果'
     },
     dropDownHeight: {
-      type: String
+      type: String,
+      default: '300px'
     }
   },
   computed: {
-    isSelected: function() {
+    selectOptions: function() {
       var temp = [];
       for (var i = 0; i < this.seachOptions.length; i++) {
         for (var k = 0; k < this.selectValue.length; k++) {
@@ -69,40 +67,40 @@ module.exports = Vue.component('selectplus-multi', {
       return temp;
     },
 
-
+    outPlaceHolder: function(){
+      return this.selectValue.length === 0 && this.outComponent;
+    }
   },
   methods: {
-    toTopDistance: function() {
-      var e = this.$el;
-      var offset = e.offsetTop;
-      // var scrollTop = document.body.scrollTop;
-      while (e.offsetParent !== null) {
-        e = e.offsetParent;
-        offset += e.offsetTop;
-      }
-      var result = offset;
-      return result;
-    },
+    // toTopDistance: function() {
+    //   var e = this.$el;
+    //   var offset = e.offsetTop;
+    //   // var scrollTop = document.body.scrollTop;
+    //   while (e.offsetParent !== null) {
+    //     e = e.offsetParent;
+    //     offset += e.offsetTop;
+    //   }
+    //   var result = offset;
+    //   return result;
+    // },
     chooseAll: function() {
-      var temp = [];
       for (var i = 0; i < this.seachOptions.length; i++) {
-        temp[i] = this.seachOptions[i][this.valueKey];
-        this.value = temp;
+        var id = this.seachOptions[i][this.valueKey];
+        if ( this.value.indexOf(id) == -1 ) this.value.push(id);
       }
       this.selectValue = this.seachOptions.slice(0);
       this.getFoucus();
     },
     invertSelect: function() {
-      var temp = this.value.slice(0);
-      this.chooseAll();
-      for (var i = 0; i < temp.length; i++) {
-        for (var k = 0; k < this.value.length; k++) {
-          if (temp[i] == this.value[k]) {
-            this.value.splice(k, 1);
-            this.selectValue.splice(k, 1);
-          }
-        }
+      for (var i = 0; i < this.seachOptions.length; i++) {
+        var id = this.seachOptions[i][this.valueKey];
+        var index = this.value.indexOf(id);
+        if ( index == -1 ) this.value.push(id);
+        else this.value.splice(index, 1);
       }
+      this.selectValue = _.filter( this.seachOptions, function(o){
+        return this.value.indexOf( o[ this.valueKey ] ) != -1;
+      }.bind(this));
       this.getFoucus();
     },
     changeSelectValue: function(option) {
@@ -120,24 +118,23 @@ module.exports = Vue.component('selectplus-multi', {
       this.getFoucus();
     },
     getFoucus: function() {
-
       this.$el.getElementsByTagName('input')[0].focus();
     },
-    scrollDropDown: function() {
-      var visiHeight = document.documentElement.clientHeight;
-      var scrollTop = document.body.scrollTop;
-      if (visiHeight - this.toTopDistance() + scrollTop < this.compHeight) {
-        var offsetY = this.toTopDistance() - visiHeight + this.compHeight;
-        $('body').animate({
-          scrollTop: offsetY
-        }, 300);
-      }
-    },
+    // scrollDropDown: function() {
+    //   var visiHeight = document.documentElement.clientHeight;
+    //   var scrollTop = document.body.scrollTop;
+    //   if (visiHeight - this.toTopDistance() + scrollTop < this.compHeight) {
+    //     var offsetY = this.toTopDistance() - visiHeight + this.compHeight;
+    //     $('body').animate({
+    //       scrollTop: offsetY
+    //     }, 300);
+    //   }
+    // },
     inputFocus: function() {
       this.inputBorder = 1;
-      this.scrollDropDown();
+      // this.scrollDropDown();
       //exist value
-      if (this.value.length > 0) {
+      if (this.selectValue.length > 0) {
         this.inputWidth = 10;
         this.placeHolder = '';
       }
@@ -182,10 +179,9 @@ module.exports = Vue.component('selectplus-multi', {
         }
       }
       this.selectValue = temp;
-      this.checkBoxHeight = this.$el.getElementsByClassName('check-box')[0].offsetHeight;
-      console.log(this.checkBoxHeight);
-      this.compHeight = Number(this.dropDownHeight.split('px')[0]) + this.checkBoxHeight + 35;
-      if (this.value.length > 0) {
+      this.checkBoxHeight = this.$els.checkBox.getBoundingClientRect().height;
+      // this.compHeight = Number(this.dropDownHeight.split('px')[0]) + this.checkBoxHeight + 35;
+      if (this.selectValue.length > 0) {
         this.inputWidth = 10;
         this.placeHolder = '';
       }
@@ -196,25 +192,33 @@ module.exports = Vue.component('selectplus-multi', {
       }
     },
     locateDropDown: function() {
-      var scrollHeight = document.documentElement.scrollHeight;
-      //下方空间不足
-      if (scrollHeight - this.toTopDistance() < this.compHeight) {
-        this.showUpClass = true;
-        this.showDownClass = false;
-        this.dropDownTop = -Number(this.dropDownHeight.split('px')[0]) - 29;
-      } else {
-        this.showUpClass = false;
-        this.showDownClass = true;
-
-      }
+      //下方空间不足时下拉框翻转
+      this.showUpClass = false;
+      this.showDownClass = true;
+      this.isDropDownFlipped = false;
+      Vue.nextTick(function(){
+        var checkboxRect = this.$els.checkBox.getBoundingClientRect();
+        var dropDownRect = this.$els.dropDown.getBoundingClientRect();
+        if (
+          (document.documentElement.clientHeight - checkboxRect.top - checkboxRect.height) < dropDownRect.height &&
+          (checkboxRect.height + dropDownRect.height) < document.documentElement.clientHeight
+        ) {
+          this.showUpClass = true;
+          this.showDownClass = false;
+          this.isDropDownFlipped = true;
+        } else {
+          this.showUpClass = false;
+          this.showDownClass = true;
+          this.isDropDownFlipped = false;
+        }
+      }.bind(this));
     }
-
   },
   watch: {
     'seach': 'filterSeachOptions',
     'value': 'getSelectValue',
     'checkBoxHeight': 'locateDropDown',
-    'compHeight': 'scrollDropDown'
+    // 'compHeight': 'scrollDropDown'
   },
   beforeCompile: function() {
     this.filterSeachOptions();
@@ -229,26 +233,21 @@ module.exports = Vue.component('selectplus-multi', {
       if (ele == tagName) {
         return;
       }
-      while (ele != document.body) {
+      while (ele && ele != document.body) {
         if (ele.parentNode == component) {
           //点击事件在组件内
           this.outComponent = 0;
           this.$nextTick(function() {
             this.$el.getElementsByTagName('input')[0].focus();
           });
-          this.dropDown = 'block';
-          this.outPlaceHolder = 0;
-          this.locateDropDown();
-          return;
+          this.showDropDown = true;
+          return ;
         }
         ele = ele.parentNode;
       }
       //点击事件在组件外
-      this.dropDown = 'none';
+      this.showDropDown = false;
       this.outComponent = 1;
-      if (this.value.length === 0) {
-        this.outPlaceHolder = 1;
-      }
     }.bind(this), true);
   }
 });
