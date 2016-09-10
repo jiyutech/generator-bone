@@ -42,7 +42,7 @@ var addRoute = function(answers) {
   var templateString = template[0].replace(/((\/\*{2}-{2})|(-{2}[*]{2}[/]{1}))/g, '');
   templateString = templateString.replace('urlName', "'/" + answers.routeName + "'");
   if (answers.type === 'server page' || answers.type === 'server + vue page') {
-    templateString = templateString.replace('filePath', "'" + answers.routeName + '/' + answers.routeName + 'server.js' + "'");
+    templateString = templateString.replace('filePath', "'" + answers.routeName + '/' + answers.routeName + '.server.js' + "'");
   } else {
     templateString = templateString.replace('filePath', "'" + answers.routeName + '/' + answers.routeName + '.html' + "'");
   }
