@@ -12,7 +12,7 @@ module.exports = Vue.component('selectplus-multi', {
       selectValue: [],
       seach: '',
       seachOptions: [],
-      selectOptions: [],
+      // selectOptions: [],
       inputBorder: '0',
       placeHolder: '',
       inputWidth: '100',
@@ -67,7 +67,7 @@ module.exports = Vue.component('selectplus-multi', {
       return temp;
     },
 
-    outPlaceHolder: function(){
+    outPlaceHolder: function() {
       return this.selectValue.length === 0 && this.outComponent;
     }
   },
@@ -86,7 +86,7 @@ module.exports = Vue.component('selectplus-multi', {
     chooseAll: function() {
       for (var i = 0; i < this.seachOptions.length; i++) {
         var id = this.seachOptions[i][this.valueKey];
-        if ( this.value.indexOf(id) == -1 ) this.value.push(id);
+        if (this.value.indexOf(id) == -1) this.value.push(id);
       }
       this.selectValue = this.seachOptions.slice(0);
       this.getFoucus();
@@ -95,11 +95,11 @@ module.exports = Vue.component('selectplus-multi', {
       for (var i = 0; i < this.seachOptions.length; i++) {
         var id = this.seachOptions[i][this.valueKey];
         var index = this.value.indexOf(id);
-        if ( index == -1 ) this.value.push(id);
+        if (index == -1) this.value.push(id);
         else this.value.splice(index, 1);
       }
-      this.selectValue = _.filter( this.seachOptions, function(o){
-        return this.value.indexOf( o[ this.valueKey ] ) != -1;
+      this.selectValue = _.filter(this.seachOptions, function(o) {
+        return this.value.indexOf(o[this.valueKey]) != -1;
       }.bind(this));
       this.getFoucus();
     },
@@ -113,6 +113,7 @@ module.exports = Vue.component('selectplus-multi', {
           return;
         }
       }
+      console.log(1);
       this.value.push(option[this.valueKey]);
       this.selectValue.push(option);
       this.getFoucus();
@@ -196,22 +197,21 @@ module.exports = Vue.component('selectplus-multi', {
       this.showUpClass = false;
       this.showDownClass = true;
       this.isDropDownFlipped = false;
-      Vue.nextTick(function(){
-        var checkboxRect = this.$els.checkBox.getBoundingClientRect();
-        var dropDownRect = this.$els.dropDown.getBoundingClientRect();
-        if (
-          (document.documentElement.clientHeight - checkboxRect.top - checkboxRect.height) < dropDownRect.height &&
-          (checkboxRect.height + dropDownRect.height) < document.documentElement.clientHeight
-        ) {
-          this.showUpClass = true;
-          this.showDownClass = false;
-          this.isDropDownFlipped = true;
-        } else {
-          this.showUpClass = false;
-          this.showDownClass = true;
-          this.isDropDownFlipped = false;
-        }
-      }.bind(this));
+      var checkboxRect = this.$els.checkBox.getBoundingClientRect();
+      var dropDownRect = this.$els.dropDown.getBoundingClientRect();
+      if (
+        (document.documentElement.clientHeight - checkboxRect.top - checkboxRect.height) < dropDownRect.height &&
+        (checkboxRect.height + dropDownRect.height) < document.documentElement.clientHeight
+      ) {
+        this.showUpClass = true;
+        this.showDownClass = false;
+        this.isDropDownFlipped = true;
+      } else {
+        this.showUpClass = false;
+        this.showDownClass = true;
+        this.isDropDownFlipped = false;
+      }
+
     }
   },
   watch: {
@@ -239,9 +239,10 @@ module.exports = Vue.component('selectplus-multi', {
           this.outComponent = 0;
           this.$nextTick(function() {
             this.$el.getElementsByTagName('input')[0].focus();
+            this.locateDropDown();
           });
           this.showDropDown = true;
-          return ;
+          return;
         }
         ele = ele.parentNode;
       }

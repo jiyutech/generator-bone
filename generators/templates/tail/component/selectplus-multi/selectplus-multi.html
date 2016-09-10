@@ -1,7 +1,7 @@
 <div class="component-selectplusmulti">
   <div class="check-box" v-el:check-box>
     <div v-for="tag in selectValue" class="tag" >
-      <span @click="value.splice($index,1),selectValue.splice($index,1)">×</span>
+      <span @click="changeSelectValue(tag)">×</span>
       <span class="tagName">{{tag[labelKey]}}</span>
     </div>
     <input v-model="seach" @focus="inputFocus()" size="{{2*seach.length}}" maxlength="20" :placeholder="placeHolder" :style="{'border-width':inputBorder+'px','width':inputWidth+'%'}"  v-if="outComponent !== 1">
