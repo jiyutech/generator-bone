@@ -6,12 +6,15 @@ const path = require('path');
 
 const views = require('co-views');
 const _ = require('lodash');
-const env = require('get-env')();
+const env = require('get-env')({
+  test: ['test', 'testing']
+});
 
 const getconf = require('../getconf.js');
 // const conf = getconf();
 const noPrivateConfig = getconf.noPrivate();
 const pkgInfo = _.pick( require( projectBase +'/package.json'), ['name', 'version', 'boneVersion']);
+const boneConf = require('../bone-config');
 
 
 function mixin( data, key, mixin ){
@@ -24,6 +27,11 @@ function mixin( data, key, mixin ){
   else if ( arguments.length === 2 ) {
     _.extend( data, key || {} );
   }
+}
+
+// 避免XSS攻击
+function htmlSave( str ) {
+  return str.replace(/<[/]?script.*?>/ig, '');
 }
 
 var doRender = views( projectBase, {
@@ -44,8 +52,8 @@ module.exports = function( controllerHelper, siteConf ){
     // conf mixin
     mixin( data, 'conf', noPrivateFullSiteConfig);
     // query mixin
-    mixin( data, 'query', this.query);
-    mixin( data, 'params', this.params);
+    mixin( data, 'query', JSON.parse( htmlSave( JSON.stringify( this.query || {} ) ) ));
+    mixin( data, 'params', JSON.parse( htmlSave( JSON.stringify( this.params || {} ) ) ));
     // Middleware mixin
     mixin( data, this.renderMixin );
     // For client mvvm
@@ -56,7 +64,7 @@ module.exports = function( controllerHelper, siteConf ){
     // 非开发环境使用build后的html
     if ( env != 'dev' ) {
       viewPath = path.normalize(
-        controllerHelper.conf.buildPath +'/'+ siteConf.src +'/{{staticPrefix}}/'+
+        boneConf.buildPath +'/'+ siteConf.src +'/{{staticPrefix}}/'+
         viewPath.slice( siteConf.src.length )
       );
     }

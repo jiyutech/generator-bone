@@ -1,6 +1,8 @@
 'use strict';
 
-var env = require('get-env')();
+var env = require('get-env')({
+  test: ['test', 'testing']
+});
 var _ = require('lodash');
 var addonConf;
 

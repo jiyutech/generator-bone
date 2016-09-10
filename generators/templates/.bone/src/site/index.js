@@ -8,11 +8,15 @@ const Router = require('koa-router');
 const conf = require('../getconf.js')();
 const Render = require('./render');
 const request = require('./request');
-const env = require('get-env')();
+const env = require('get-env')({
+  test: ['test', 'testing']
+});
 const koaStaticCache = require('koa-static-cache');
 const mount = require('koa-mount');
 const nav = require('./middleware/navigator');
+const responseType = require('./middleware/response-type');
 const Logger = require('../logger.js');
+const boneConf = require('../bone-config.js');
 
 module.exports = function( siteConf ){
 
@@ -22,6 +26,7 @@ module.exports = function( siteConf ){
   const siteLogger = new Logger( 'Site '+ (siteConf.sitePrefix || '/') );
 
   const controllerHelper = {
+    env: env,
     conf: fullSiteConf,
     request: request,
     render: null, // 将在Render中被完善
@@ -34,6 +39,7 @@ module.exports = function( siteConf ){
   const render = new Render( controllerHelper, siteConf );
 
   const site = {
+    env: env,
     app: koa(),
     conf: fullSiteConf,
     router: new Router({
@@ -44,6 +50,7 @@ module.exports = function( siteConf ){
     request: request,
     middleware: {
       navigator: nav,
+      responseType: responseType,
     },
     logger: siteLogger,
   };
@@ -107,7 +114,7 @@ module.exports = function( siteConf ){
     default:
 
       // 生产环境 Static Server
-      [ path.normalize( conf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}' ) ].forEach(function( path ){
+      [ path.normalize( boneConf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}' ) ].forEach(function( path ){
         site.app.use(koaStaticCache(path, {
           prefix: siteConf.staticPrefix,
           maxage: 31536000000

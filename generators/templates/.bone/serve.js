@@ -39,6 +39,6 @@ router.all('/bone-debug', require('./src/debug-page.js'));
 app.use(router.routes())
     .use(router.allowedMethods());
 
-
-module.exports = app.listen( conf.port );
-boneLogger.info(pkgInfo.name +'@'+ pkgInfo.version +' runing on port '+ conf.port + ' in `'+ env +'` mode');
+var port = process.env.PORT || conf.port;
+module.exports = app.listen( port );
+boneLogger.info(pkgInfo.name +'@'+ pkgInfo.version +' runing on port '+ port + ' in `'+ env +'` mode');

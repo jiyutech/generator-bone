@@ -182,6 +182,9 @@ module.exports = function( options ){
       // TODO only deal with changed file.
       // if ( isSourceFileChanged( srcFileInfo ) ) {
       this.body = srcFileInfo.compile();
+      // 避免被浏览器端缓存的临时方案，TODO 找到添加etag和last-modified的位置并且做处理
+      delete this.response.headers['etag'];
+      delete this.response.headers['last-modified'];
       // }
       // else {
         // this.body = fs.createReadStream( srcFileInfo.buildedFilePath )

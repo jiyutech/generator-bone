@@ -9,7 +9,8 @@
     },{
       "path": ".gitattributes"
     },{
-      "path": ".gitignore"
+      "path": "gitignore",
+      "dist": ".gitignore"
     },{
       "path": ".jshintrc"
     },{
