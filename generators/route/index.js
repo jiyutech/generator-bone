@@ -15,9 +15,6 @@ util.inherits(Generator, baseJs);
 
 
 Generator.prototype.initFiles = function() {
-  console.log(this.sourceRoot());
-  console.log(this.destinationPath());
-  console.log(this.answers);
   this.prompt([{
     type: 'input',
     name: 'site',
@@ -34,7 +31,6 @@ Generator.prototype.initFiles = function() {
     message: 'what route do you need',
     choices: ['sample page', 'server page', 'vue page', 'server + vue page']
   }], function(answers) {
-    console.log(answers);
     addRoute.apply(this, [answers]);
     createFiles.apply(this, [answers]);
   }.bind(this));
