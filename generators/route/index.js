@@ -52,31 +52,26 @@ var addRoute = function(answers) {
 };
 
 var createFiles = function(answers) {
+  answers.useVuejs = false;
   this.template(
-    this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-1/sample-page-1.scss',
+    this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.scss',
     this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.scss',
     answers);
   if (answers.type === 'server page' || answers.type === 'server + vue page') {
     this.template(
-      this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-2/sample-page-2.server.js',
+      this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.server.js',
       this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.server.js',
       answers);
   }
   if (answers.type === 'vue page' || answers.type === 'server + vue page') {
+    answers.useVuejs = true;
     this.template(
-      this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-3/sample-page-3.html',
-      this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.html',
-      answers);
-    this.template(
-      this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-3/sample-page-3.js',
+      this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.js',
       this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.js',
       answers);
-  } else {
-    this.template(
-      this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-1/sample-page-1.html',
-      this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.html',
-      answers);
   }
-
-
+  this.template(
+    this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.html',
+    this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.html',
+    answers);
 };
