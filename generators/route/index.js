@@ -4,7 +4,6 @@ var fs = require('fs');
 
 var Generator = module.exports = function Generator() {
   baseJs.apply(this, arguments);
-  console.log(arguments[0]);
   this.answers = {};
   this.answers.site = arguments[0][0];
   this.answers.routeName = arguments[0][1];
@@ -53,7 +52,6 @@ var addRoute = function(answers) {
 };
 
 var createFiles = function(answers) {
-  console.log(answers);
   this.template(
     this.sourceRoot() + '/' + answers.site + '/page/' + '_sample-page-1/sample-page-1.scss',
     this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.scss',
