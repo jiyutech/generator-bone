@@ -6,8 +6,13 @@
     position: relative;
     border: 1px solid #ddd;
     cursor: pointer;
-    padding: 6.5px 10px;
-    min-height: 34px;
+    height: 34px;
+    span:nth-of-type(1){
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translate(0,-50%);
+    }
     span:nth-of-type(2) {
       position: absolute;
       right: 20px;
@@ -19,11 +24,15 @@
     }
     span:nth-of-type(3){
       position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translate(0,-50%);
       color: #ababab;
     }
   }
   .drop-down {
     position: absolute;
+    z-index: 10000;
     width: 100%;
     border: 1px solid #ddd;
     background-color: #fff;
@@ -33,10 +42,11 @@
       padding: 0 10px;
       input {
         width: 100%;
-        padding: 5px;
+        padding: 0 0 0 30px;
         border: 1px solid #3C8DBC;
         margin: 5px 0;
-        padding-left: 30px;
+        line-height: 32px;
+        height: 32px;
         &:focus {
           outline: 0;
         }
@@ -54,11 +64,12 @@
       padding: 0;
       overflow: auto;
       li {
-        min-height: 29px;
-        cursor: pointer;
+        height: 32px;
+        white-space: nowrap;
         list-style: none;
         text-align: left;
-        padding: 5px 0 5px 10px;
+        line-height: 32px;
+        padding-left: 10px;
       }
     }
   }
@@ -82,5 +93,15 @@
     &:hover span{
       color: #fff;
     }
+  }
+  .noResult{
+    cursor: text;
+    background-color: #e8e8e8;
+    &:hover{
+      background-color: #e8e8e8;
+    }
+  }
+  .hasResult{
+    cursor: pointer;
   }
 }

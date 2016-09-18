@@ -83,6 +83,14 @@ module.exports = Vue.component('selectplus-single', {
       }
       this.seachOptions = temp;
     },
+    changeSelectValue:function(index){
+      if (this.seachOptions[0][this.labelKey] === this.noResult) {
+        console.log(1);
+        return;
+      }
+      this.value=this.seachOptions[index][this.valueKey];
+      this.activeOption=index;
+    },
     locateDropDown: function() {
       //下方空间不足时下拉框翻转
       this.showUpClass = false;
