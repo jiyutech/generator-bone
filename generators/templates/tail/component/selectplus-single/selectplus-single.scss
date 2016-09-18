@@ -1,7 +1,6 @@
 .component-selectsingle {
   position: relative;
   background-color: #fff;
-  margin-right: 50px;
   .select {
     position: relative;
     border: 1px solid #ddd;
@@ -73,35 +72,34 @@
       }
     }
   }
-  .showUp {
+  .show-up {
     border-bottom: 0;
   }
-  .showDown {
+  .show-down {
     border-top: 0;
   }
-  .activeOption{
+  .active-option{
     background-color: #e8e8e8;
     &:hover{
       background-color: #e8e8e8;
     }
   }
-  .inactiveOption{
+  .inactive-option{
     background-color: #fff;
     &:hover{
       background-color: #3C8DBC;
-    }
-    &:hover span{
       color: #fff;
     }
   }
-  .noResult{
+  .no-result{
     cursor: text;
-    background-color: #e8e8e8;
+    background-color: #fff;
     &:hover{
-      background-color: #e8e8e8;
+      background-color: #fff;
+      color: #333;
     }
   }
-  .hasResult{
+  .has-result{
     cursor: pointer;
   }
 }
