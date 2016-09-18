@@ -1,0 +1,21 @@
+<div class="component-selectsingle" >
+  <div class="select" v-el:select>
+    <span>{{selectValue[labelKey]}}</span>
+    <span class="glyphicon" :class="{'glyphicon-triangle-bottom':outComponent,'glyphicon-triangle-top':!outComponent}"></span>
+    <span v-if="!value">{{placeholder}}</span>
+  </div>
+
+  <div class="drop-down" v-el:drop-down :style="{'display':showDropDown ? 'block':'none','bottom': isDropDownFlipped ? '100%':'auto'}" :class="{'showUp':showUpClass,'showDown':showDownClass}">
+    <div class="seach"  v-if="!isDropDownFlipped">
+          <input class="input" type="text" v-model="seach" >
+          <i class="glyphicon glyphicon-search"></i>
+    </div>
+    <ul :style="{'max-height':dropDownHeight}">
+      <li v-for="option in seachOptions" @click="value=option[valueKey],activeOption=$index" :class="{'activeOption':activeOption == $index,'inactiveOption':activeOption!==$index}"><span>{{option[labelKey]}}</span></li>
+    </ul>
+    <div class="seach"  v-if="isDropDownFlipped">
+          <input class="input" type="text" v-model="seach">
+          <span class="glyphicon glyphicon-search"></span>
+    </div>
+  </div>
+</div>
