@@ -4,8 +4,8 @@ var Vue = window.Vue;
 
 
 
-module.exports = Vue.component('select-single', {
-  template: require('./select-single.html'),
+module.exports = Vue.component('selectplus-single', {
+  template: require('./selectplus-single.html'),
   replace: false,
 
   data: function() {
