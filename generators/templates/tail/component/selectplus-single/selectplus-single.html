@@ -1,5 +1,5 @@
 <div class="component-selectsingle">
-  <div class="select" v-el:select>
+  <div class="select" v-el:select >
     <span>{{selectValue[labelKey]}}</span>
     <span class="glyphicon" :class="{'glyphicon-triangle-bottom':outComponent,'glyphicon-triangle-top':!outComponent}"></span>
     <span v-if="!value">{{placeholder}}</span>
@@ -11,7 +11,7 @@
       <i class="glyphicon glyphicon-search"></i>
     </div>
     <ul :style="{'max-height':dropDownHeight}">
-      <li v-for="option in seachOptions" @click="changeSelectValue($index)" :class="{'active-option':activeOption == $index,'inactive-option':activeOption!==$index,
+      <li v-for="option in seachOptions" @click="changeSelectValue($index)" :class="{'active-option':activeOption == option[valueKey],'inactive-option':activeOption!==option[valueKey],
     'has-result':hasResultClass,'no-result':noResultClass}"
       >{{option[labelKey]}}</li>
     </ul>

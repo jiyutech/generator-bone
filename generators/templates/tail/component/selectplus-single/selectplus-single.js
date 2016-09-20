@@ -68,7 +68,7 @@ module.exports = Vue.component('selectplus-single', {
       this.hasResultClass = true;
       this.noResultClass = false;
       for (var i = 0; i < this.options.length; i++) {
-        if (this.options[i][this.labelKey].indexOf(this.seach) != -1) {
+        if (this.options[i][this.labelKey].toLowerCase().indexOf(this.seach.toLowerCase()) != -1) {
           temp[k] = this.options[i];
           k++;
         }
@@ -85,11 +85,12 @@ module.exports = Vue.component('selectplus-single', {
     },
     changeSelectValue:function(index){
       if (this.seachOptions[0][this.labelKey] === this.noResult) {
-        console.log(1);
         return;
       }
       this.value=this.seachOptions[index][this.valueKey];
-      this.activeOption=index;
+      this.activeOption=this.value;
+      this.showDropDown = false;
+      this.outComponent = true;
     },
     locateDropDown: function() {
       //下方空间不足时下拉框翻转
@@ -124,9 +125,12 @@ module.exports = Vue.component('selectplus-single', {
     document.addEventListener('click', function(event) {
       var ele = event.target;
       var component = this.$el;
-      var tagName = this.$el.getElementsByClassName('tagName')[0];
-      if (ele == tagName) {
-        return;
+      if (this.$els.select == ele) {
+        if (this.showDropDown) {
+          this.showDropDown = false;
+          this.outComponent = true;
+          return;
+        }
       }
       while (ele && ele != document.body) {
         if (ele.parentNode == component) {
