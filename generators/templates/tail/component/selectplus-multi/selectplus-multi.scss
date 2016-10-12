@@ -1,16 +1,16 @@
-.component-selectplusmulti{
+.component-selectplusmulti {
   display: block;
   position: relative;
   min-width: 100px;
-  .check-box{
+  .check-box {
     position: relative;
     border: 1px solid #ddd;
     background-color: #fff;
-    padding:5px 4px 0 4px;
+    padding: 5px 4px 0;
     margin: 0;
     min-height: 34px;
     cursor: text;
-    >span{
+    > span {
       position: absolute;
       left: 10px;
       top: 6px;
@@ -24,7 +24,7 @@
         outline: 0;
       }
     }
-    .tag{
+    .tag {
       font-size: 0;
       display: inline-block;
       padding: 0 10px 0 0;
@@ -33,36 +33,36 @@
       line-height: 23px;
       background-color: #3C8DBC;
       border-radius: 3px;
-      margin:0 4px 4px 0;
-      span:nth-of-type(1){
+      margin: 0 4px 4px 0;
+      span:nth-of-type(1) {
         position: relative;
         color: #e2e2e2;
         cursor: pointer;
         margin: 0 8px;
         font-size: 14px;
         user-select: none;
-        &:hover{
+        &:hover {
           color: #fff;
         }
       }
-      span:nth-of-type(2){
+      span:nth-of-type(2) {
         font-size: 12px;
-        user-select:text;
+        user-select: text;
       }
     }
   }
-  .drop-down{
+  .drop-down {
     width: 100%;
     position: absolute;
     background-color: #fff;
     border: 1px solid #ddd;
     z-index: 10000000;
     box-shadow: 0 0 3px rgba(0,0,0,0.1);
-    >div:nth-of-type(1){
+    > div:nth-of-type(1) {
       height: 29px;
       background-color: #fff;
       padding: 5px 0 0 10px;
-      a:nth-of-type(2){
+      a:nth-of-type(2) {
         margin-left: 10px;
       }
     }
@@ -76,10 +76,10 @@
         text-align: left;
         padding: 6px 10px;
         height: 32px;
-        span:nth-of-type(2){
+        span:nth-of-type(2) {
           margin-left: 23px;
         }
-        span:nth-of-type(1){
+        span:nth-of-type(1) {
           position: absolute;
           top: 50%;
           transform: translate(0,-50%);
@@ -88,29 +88,22 @@
       }
     }
   }
-  .showUp{
+  .show-up {
     border-bottom: 0;
   }
-  .showDown{
+  .show-down {
     border-top: 0;
   }
-  .hasResult{
+  .is-hover {
+    background-color: #3C8DBC!important;
+    color: #fff;
+  }
+  .has-result {
     cursor: pointer;
-    &:hover {
-      background-color: #3C8DBC!important;
-    }
-    &:hover span {
-      color: #fff;
-    }
   }
-  .noResult{
+  .no-result {
     cursor: text;
-    &:hover {
-      background-color: #fff!important;
-    }
-    &:hover span {
-      color: #inherit;
-    }
+    background-color: #fff!important;
+    color: #333;
   }
-
 }
