@@ -1,0 +1,116 @@
+{% extends '../../layout/normal.html' %}
+
+{% block title %}{% parent %}{{navigator.currentNavCate.name}}{% endblock %}
+{% block description %}{{navigator.currentNavCate.description}}{% endblock %}
+
+{% block styles %}
+  {% parent %}
+  <link rel="stylesheet" href="{{staticPrefix}}/page/<%= routeName %>/<%= routeName %>.css">
+{% endblock %}
+
+{% block scripts %}
+  {% parent %}
+  <script src="{{staticPrefix}}/page/<%= routeName %>/<%= routeName %>.js"></script>
+{% endblock %}
+
+{% block template %}
+{% parent %}
+{% raw %}
+
+<div class="box box-solid filter-box">
+  <div class="box-header" style="line-height: 30px;">
+    <div class="row nowrap">
+      <div class="col-sm-7">
+        <p class="no-padding no-margin inline " >
+          <daterangepicker
+            :null="true"
+            :start.sync="start"
+            :end.sync="end"
+            :full-mode="true"
+          >
+          </daterangepicker>
+        </p>
+        <p class="no-padding no-margin inline">
+          <a href="javascript:;" style="margin-left:10px; margin-right: 5px;" @click="stWeekAgo()" @click="kw = ''" :class="{
+            'bg-blue': isWithinWeek,
+            'badge': isWithinWeek,
+          }">最近7天</a>
+          <a href="javascript:;" @click="stMonthAgo()" @click="kw = ''" :class="{
+            'bg-blue': isWithinMonth,
+            'badge': isWithinMonth,
+          }">最近30天</a>
+        </p>
+      </div>
+      <div class="col-sm-5">
+        <div class="input-group input-group-sm pull-right customer-list-container">
+          <input type="text" name="table_search" class="form-control pull-right"
+            placeholder="搜索：订单ID、商品、用户、手机"
+            v-model="keyword" @keyup="refreshBySearch()">
+          <div class="input-group-btn">
+            <button @click="refreshBySearch()" type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr v-if="showStatusFilter">
+    <div class="row" v-if="showStatusFilter">
+      <div class="col-lg-2 col-md-3 col-xs-3">
+        <p class="form-control-static text-right nowrap">
+          <label>订单状态筛选：</label>
+        </p>
+      </div>
+      <div class="col-lg-9 col-md-8 col-xs-8">
+        <p class="form-control-static no-select">
+          <a href="javascript:;" @click="toggleAllStatus( true )" class="mr10">全选</a>
+          <a href="javascript:;" @click="toggleAllStatus( false )">全不选</a>
+          <br>
+          <label v-repeat="orignalStatus" class="mr20">
+            <input type="checkbox" v-multicheck="status" value="{{$value}}"> {{$value}}
+          </label>
+        </p>
+        <hr class="no-margin" v-if="showFactoryDelayedFilter">
+        <p class="form-control-static no-select" v-if="showFactoryDelayedFilter">
+          <label>
+            <input type="checkbox" v-model="onlyShowDelayed"> 只看生产超期订单
+          </label>
+        </p>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.box-header -->
+</div>
+
+<div class="box">
+  <div class="box-body table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="text-center">时间
+            <span class="list-order-ctl" @click="(pn = 1) && ( ob = ob == 'create_time.desc' ? 'create_time.asc' : 'create_time.desc' )">
+              <i v-if="ob == 'create_time.desc'" class="glyphicon glyphicon-arrow-down"></i>
+              <i v-if="ob == 'create_time.asc'" class="glyphicon glyphicon-arrow-up"></i>
+            </span>
+          </th>
+          <th style="min-width: 200px; width: 200px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr v-for="m in resultSet">
+        <td>{{m.time | dateTime}}</td>
+        <td>{{m.from}}</td>
+        <td>{{m.body}}</td>
+      </tr>
+      <tr v-if="!resultSetresultSet || !resultSetresultSet.length">
+        <td v-if="resultSetresultSet"  colspan="3" class="text-center text-muted">没有匹配的记录，请尝试更改筛选条件</td>
+        <td v-if="!resultSetresultSet" colspan="3" class="text-center text-muted">加载中...</td>
+      </tr>
+    </tbody></table>
+  </div>
+  <!-- /.box-body -->
+  <div class="box-footer text-center">
+    <pagination v-if="resultSet && resultSet.length && pageTotal" :page.sync="pageNumber" :page-total.sync="totalPages"></pagination>
+  </div>
+</div>
+{% endraw %}
+{% endblock %}

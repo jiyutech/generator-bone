@@ -11,28 +11,52 @@ var Generator = module.exports = function Generator() {
 
 util.inherits(Generator, baseJs);
 
-
-
 Generator.prototype.initFiles = function() {
-  this.prompt([{
-    type: 'input',
-    name: 'site',
-    message: 'Your site name',
-    default: this.answers.site || 'app' // Default to current folder name
-  }, {
-    type: 'input',
-    name: 'routeName',
-    message: 'Your route name',
-    default: this.answers.routeName || 'my-route' // Default to current folder name
-  }, {
-    type: 'list',
-    name: 'type',
-    message: 'what route do you need',
-    choices: ['sample page', 'server page', 'vue page', 'server + vue page']
-  }], function(answers) {
-    addRoute.apply(this, [answers]);
-    createFiles.apply(this, [answers]);
-  }.bind(this));
+  if (this.answers.site === 'app') {
+    this.prompt([{
+      type: 'input',
+      name: 'site',
+      message: 'Your site name',
+      default: this.answers.site || 'app' // Default to current folder name
+    }, {
+      type: 'input',
+      name: 'routeName',
+      message: 'Your route name',
+      default: this.answers.routeName || 'my-route' // Default to current folder name
+    }, {
+      type: 'list',
+      name: 'type',
+      message: 'what route do you need',
+      choices: ['sample page', 'server page', 'vue page', 'server + vue page']
+    }], function(answers) {
+      addRoute.apply(this, [answers]);
+      createFiles.apply(this, [answers]);
+    }.bind(this));
+  } else if (this.answers.site === 'tail') {
+    this.prompt([{
+      type: 'input',
+      name: 'site',
+      message: 'Your site name',
+      default: this.answers.site || 'app' // Default to current folder name
+    }, {
+      type: 'input',
+      name: 'routeName',
+      message: 'Your route name',
+      default: this.answers.routeName || 'my-route' // Default to current folder name
+    }, {
+      type: 'list',
+      name: 'type',
+      message: 'what route do you need',
+      choices: ['sample page', 'list page', 'sample page + server', 'list page + server']
+    }], function(answers) {
+      addRoute.apply(this, [answers]);
+      createFilesTail.apply(this, [answers]);
+    }.bind(this));
+  } else {
+    console.log('error site');
+    return;
+  }
+
   //this.template(this.sourceRoot() + '/demo.html',this.destinationPath() + '/demo.html');
 };
 
@@ -41,12 +65,12 @@ var addRoute = function(answers) {
   var template = distText.match(/(\/\*{2}-{2}[\S\s]*-{2}[*]{2}(\/){1})/g);
   var templateString = template[0].replace(/((\/\*{2}-{2})|(-{2}[*]{2}[/]{1}))/g, '');
   templateString = templateString.replace('urlName', "'/" + answers.routeName + "'");
-  if (answers.type === 'server page' || answers.type === 'server + vue page') {
+  if (/server/g.test(answers.type)) {
     templateString = templateString.replace('filePath', "'" + answers.routeName + '/' + answers.routeName + '.server.js' + "'");
   } else {
     templateString = templateString.replace('filePath', "'" + answers.routeName + '/' + answers.routeName + '.html' + "'");
   }
-  var result = templateString + '\n\n' + '\t' +template[0];
+  var result = templateString + '\n\n' + '\t' + template[0];
   distText = distText.replace(/(\/\*{2}-{2}[\S\s]*-{2}[*]{2}(\/){1})/g, result);
   fs.writeFileSync(this.destinationPath() + '/' + answers.site + '/server/server.js', distText);
 };
@@ -73,5 +97,29 @@ var createFiles = function(answers) {
   this.template(
     this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.html',
     this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.html',
+    answers);
+};
+var createFilesTail = function(answers) {
+  if (/server/g.test(answers.type)) {
+    this.template(
+      this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.server.js',
+      this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.server.js',
+      answers);
+  }
+  var filenName = 'list-page';
+  if (/sample-page/g.test(answers.type)) {
+    var filenName = 'sample-page';
+  }
+  this.template(
+    this.sourceRoot() + '/../ejs/' + answers.site + '/' + filenName + '-template.html',
+    this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.html',
+    answers);
+  this.template(
+    this.sourceRoot() + '/../ejs/' + answers.site + '/' + filenName + '-template.scss',
+    this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.scss',
+    answers);
+  this.template(
+    this.sourceRoot() + '/../ejs/' + answers.site + '/' + filenName + '-template.js',
+    this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.js',
     answers);
 };

@@ -31,6 +31,8 @@ module.exports = function( s ){
   s.router.all('/', s.render( pageBase +'_sample-page/sample-page.html'));
   s.router.all('/list', s.render( pageBase +'_sample-list-page/sample-list-page.html'));
   s.router.all('*', s.render( pageBase +'_sample-page/sample-page.html'));
-  // /
+  //
+
+  /**--s.router.all(urlName, s.render( pageBase + filePath ));--**/
 
 };

@@ -30,5 +30,5 @@ yo bone:update
 ```
 ### route
 ```
-yo bone:route app //暂时只支持app目录
+yo bone:route app //暂时只支持app,tail目录
 ```

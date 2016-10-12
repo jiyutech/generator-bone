@@ -15,6 +15,8 @@ var MyBase = generators.Base.extend({
 module.exports = MyBase.extend({
   prompting: function() {
     var done = this.async(); //当处理完用户输入需要进入下一个生命周期阶段时必须调用这个方法
+    //this.appname默认会将 - 替换为空格，这里是将它变回来
+    this.appname = this.appname.replace(/\s/g,'-');
     return this.prompt([{
       type: 'input',
       name: 'name',
