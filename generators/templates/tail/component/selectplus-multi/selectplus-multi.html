@@ -1,20 +1,21 @@
 <div class="component-selectplusmulti">
   <div class="check-box" v-el:check-box>
     <div v-for="tag in selectValue" class="tag" >
-      <span @click="changeSelectValue(tag)">×</span>
-      <span class="tagName">{{tag[labelKey]}}</span>
+      <span @click="changeSelectValue(tag)" class="tag-close">×</span>
+      <span class="tag-name">{{tag[labelKey]}}</span>
     </div>
-    <input v-model="seach" @focus="inputFocus()" size="{{2*seach.length}}" maxlength="20" :placeholder="placeHolder" :style="{'border-width':inputBorder+'px','width':inputWidth+'%'}"  v-if="outComponent !== 1">
+    <input v-model="seach" @focus="inputFocus()"  :placeholder="placeHolder"  style="max-width:100%" :style="{'border-width':inputBorder+'px','width':2*seach.length+inputWidth+'%'}"  v-if="outComponent !== 1" @keyup.enter="changeSelectValue(seachOptions[keyMoveIndex])" @keyup.38="keyMoveIndex--" @keyup.40="keyMoveIndex++">
     <span v-if="outPlaceHolder == 1">{{placeholder}}</span>
   </div>
 
-  <div class="drop-down" v-el:drop-down :style="{'display':showDropDown ? 'block':'none','bottom': isDropDownFlipped ? '100%':'auto'}" :class="{'showUp':showUpClass,'showDown':showDownClass}">
+  <div class="drop-down" v-el:drop-down :style="{'display':showDropDown ? 'block':'none','bottom': isDropDownFlipped ? '100%':'auto'}" :class="{'show-up':showUpClass,'show-down':showDownClass}">
     <div class="text-left" v-if="noResultClass !== true && isDropDownFlipped">
       <a @click="chooseAll()" href="javascript:;">全选</a>
       <a @click="invertSelect()" href="javascript:;">反选</a>
     </div>
     <ul :style="{'max-height':dropDownHeight}">
-      <li v-for="option in seachOptions" @click="changeSelectValue(option)" :style="{'background-color':selectOptions[$index]}" :class="{'hasResult':hasResultClass,'noResult':noResultClass}">
+      <li v-for="option in seachOptions" @click="changeSelectValue(option)"
+      @mouseover="keyMoveIndex = $index" :style="{'background-color':selectOptions[$index]}" :class="{'is-hover':keyMoveIndex == $index,'has-result':hasResultClass,'no-result':noResultClass}">
       <span  class="fa" :class="{'fa-check-square-o':selectOptions[$index]=='#e8e8e8','fa-square-o':selectOptions[$index]!='#e8e8e8'}" v-if="seachOptions[0][labelKey] !== noResult"></span>
       <span>{{option[labelKey]}}</span></li>
     </ul>
