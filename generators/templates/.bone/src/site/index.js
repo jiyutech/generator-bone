@@ -74,7 +74,7 @@ module.exports = function( siteConf ){
       if ( siteConf.rootifyPaths && siteConf.rootifyPaths.length ) {
         siteConf.rootifyPaths.forEach(function( dir ){
           site.app.use(koaStaticCache( dir, {
-            prefix: ''
+            prefix: (siteConf.sitePrefix || '')
           }));
         });
       }
@@ -93,16 +93,6 @@ module.exports = function( siteConf ){
         // dest: site.buildPath,
       })));
 
-      // 开发环境 Livereload
-      if ( env === 'dev' ) {
-        site.app.use(function *(next){
-          yield next;
-          if ( (this.type || '').trim().indexOf('text/html') === 0 && typeof this.body === 'string' ) {
-            this.body = this.body.replace('</body>', '<script>document.write(\'<script src="//\'+ (location.host || \'localhost\').split(\':\')[0] +\':'+ conf.clientLrPort +'/livereload.js?snipver=1"></\' + \'script>\')</script></body>');
-          }
-        });
-      }
-
       // 开发环境 Static Server
       [ siteConf.src ].forEach(function( path ){
         site.app.use(koaStaticCache(path, {
@@ -120,6 +110,17 @@ module.exports = function( siteConf ){
           maxage: 31536000000
         }));
       });
+
+      // 生产环境rootify Static Server
+      if ( siteConf.rootifyPaths && siteConf.rootifyPaths.length ) {
+        siteConf.rootifyPaths.forEach(function( dir ){
+          var rootifyDir = path.normalize( boneConf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}/'+ dir.slice(siteConf.src.length) );
+          site.app.use(koaStaticCache( rootifyDir, {
+            prefix: (siteConf.sitePrefix || ''),
+            maxage: 3600*12
+          }));
+        });
+      }
 
     }
 

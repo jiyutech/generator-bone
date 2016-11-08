@@ -27,10 +27,24 @@ app.keys = conf.cookieKeys || ['this is a default key', 'thank nodejs'];
 app
   .use(logger());
 
-// 遍历站点列表
+// 开发环境 Livereload
+if ( env === 'dev' && (conf.livereload === undefined || conf.livereload) ) {
+  app.use(function *(next){
+    yield next;
+    if (
+      (this.type || '').trim().indexOf('text/html') === 0 &&
+      typeof this.body === 'string' &&
+      !(/MSIE\s[5-8]/i.test( this.headers['user-agent'] || '' )) // 低版本IE不加载Livereload
+    ) {
+      this.body = this.body.replace('</body>', '<script>document.write(\'<script src="//\'+ (location.host || \'localhost\').split(\':\')[0] +\':'+ conf.clientLrPort +'/livereload.js?snipver=1"></\' + \'script>\')</script></body>');
+    }
+  });
+}
+
+// 遍历子站点列表
 conf.sites.forEach(function( siteConf ){
   var site = new Site( siteConf );
-  // 挂载
+  // 挂载子站点
   app.use(mount( '/', site.app ));
 });
 
