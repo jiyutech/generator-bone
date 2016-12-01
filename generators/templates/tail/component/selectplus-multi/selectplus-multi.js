@@ -23,6 +23,7 @@ module.exports = Vue.component('selectplus-multi', {
       showDownClass: true,
       isDropDownFlipped: false,
       checkBoxHeight: '',
+      keyMoveIndex:0,
       // compHeight: '',
     };
   },
@@ -113,13 +114,13 @@ module.exports = Vue.component('selectplus-multi', {
           return;
         }
       }
-      console.log(1);
       this.value.push(option[this.valueKey]);
       this.selectValue.push(option);
       this.getFoucus();
     },
     getFoucus: function() {
       this.$el.getElementsByTagName('input')[0].focus();
+      this.$el.getElementsByTagName('input')[0].select();
     },
     // scrollDropDown: function() {
     //   var visiHeight = document.documentElement.clientHeight;
@@ -136,7 +137,7 @@ module.exports = Vue.component('selectplus-multi', {
       // this.scrollDropDown();
       //exist value
       if (this.selectValue.length > 0) {
-        this.inputWidth = 10;
+        this.inputWidth = 5;
         this.placeHolder = '';
       }
       //not exist value
@@ -154,7 +155,7 @@ module.exports = Vue.component('selectplus-multi', {
       this.hasResultClass = true;
       this.noResultClass = false;
       for (var i = 0; i < this.options.length; i++) {
-        if (this.options[i][this.labelKey].indexOf(this.seach) != -1) {
+        if (this.options[i][this.labelKey].toLowerCase().indexOf(this.seach.toLowerCase()) != -1) {
           temp[k] = this.options[i];
           k++;
         }
@@ -183,7 +184,7 @@ module.exports = Vue.component('selectplus-multi', {
       this.checkBoxHeight = this.$els.checkBox.getBoundingClientRect().height;
       // this.compHeight = Number(this.dropDownHeight.split('px')[0]) + this.checkBoxHeight + 35;
       if (this.selectValue.length > 0) {
-        this.inputWidth = 10;
+        this.inputWidth = 5;
         this.placeHolder = '';
       }
       //not exist value
@@ -194,9 +195,6 @@ module.exports = Vue.component('selectplus-multi', {
     },
     locateDropDown: function() {
       //下方空间不足时下拉框翻转
-      this.showUpClass = false;
-      this.showDownClass = true;
-      this.isDropDownFlipped = false;
       var checkboxRect = this.$els.checkBox.getBoundingClientRect();
       var dropDownRect = this.$els.dropDown.getBoundingClientRect();
       if (
@@ -211,13 +209,20 @@ module.exports = Vue.component('selectplus-multi', {
         this.showDownClass = true;
         this.isDropDownFlipped = false;
       }
-
     }
   },
   watch: {
     'seach': 'filterSeachOptions',
     'value': 'getSelectValue',
     'checkBoxHeight': 'locateDropDown',
+    'keyMoveIndex':function(val){
+      if (val < 0 ) {
+        this.keyMoveIndex = 0;
+      }
+      if (val > this.seachOptions.length -1) {
+        this.keyMoveIndex = this.seachOptions.length -1;
+      }
+    }
     // 'compHeight': 'scrollDropDown'
   },
   beforeCompile: function() {
@@ -229,9 +234,17 @@ module.exports = Vue.component('selectplus-multi', {
     document.addEventListener('click', function(event) {
       var ele = event.target;
       var component = this.$el;
-      var tagName = this.$el.getElementsByClassName('tagName')[0];
+      //tag可被复制
+      var tagName = this.$el.getElementsByClassName('tag-name')[0];
+      var tagClose = this.$el.getElementsByClassName('tag-close')[0];
+      //保持删除tag时候下拉列表的不展开状态
       if (ele == tagName) {
         return;
+      }
+      if (!this.showDropDown) {
+        if (tagClose == ele) {
+          return;
+        }
       }
       while (ele && ele != document.body) {
         if (ele.parentNode == component) {

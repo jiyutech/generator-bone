@@ -55,11 +55,13 @@ module.exports = Vue.component('selectplus-single', {
   methods: {
     getSelectValue: function() {
       //有标签的情况
+      var temp;
       for (var k = 0; k < this.options.length; k++) {
         if (this.options[k][this.valueKey] == this.value) {
-          this.selectValue = this.options[k];
+          temp = this.options[k];
         }
       }
+      this.selectValue = temp;
     },
     filterSeachOptions: function() {
       //获取输入框中内容并过滤
