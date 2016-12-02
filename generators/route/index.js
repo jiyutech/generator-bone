@@ -1,8 +1,13 @@
 var baseJs = require('../base.js');
 var util = require('util');
 var fs = require('fs');
+var _ = require('lodash');
+var Q = require('q');
+var co = require('co');
 
 var Generator = module.exports = function Generator() {
+  //兼容命令不输入站点名字
+  arguments[0] = arguments[0].length == 0 ? ['app'] : arguments[0];
   baseJs.apply(this, arguments);
   this.answers = {};
   this.answers.site = arguments[0][0];
@@ -11,53 +16,60 @@ var Generator = module.exports = function Generator() {
 
 util.inherits(Generator, baseJs);
 
-Generator.prototype.initFiles = function() {
-  if (this.answers.site === 'app') {
-    this.prompt([{
-      type: 'input',
-      name: 'site',
-      message: 'Your site name',
-      default: this.answers.site || 'app' // Default to current folder name
-    }, {
-      type: 'input',
-      name: 'routeName',
-      message: 'Your route name',
-      default: this.answers.routeName || 'my-route' // Default to current folder name
-    }, {
-      type: 'list',
-      name: 'type',
-      message: 'what route do you need',
-      choices: ['sample page', 'server page', 'vue page', 'server + vue page']
-    }], function(answers) {
-      addRoute.apply(this, [answers]);
-      createFiles.apply(this, [answers]);
-    }.bind(this));
-  } else if (this.answers.site === 'tail') {
-    this.prompt([{
-      type: 'input',
-      name: 'site',
-      message: 'Your site name',
-      default: this.answers.site || 'app' // Default to current folder name
-    }, {
-      type: 'input',
-      name: 'routeName',
-      message: 'Your route name',
-      default: this.answers.routeName || 'my-route' // Default to current folder name
-    }, {
-      type: 'list',
-      name: 'type',
-      message: 'what route do you need',
-      choices: ['sample page', 'list page', 'sample page + server', 'list page + server']
-    }], function(answers) {
-      addRoute.apply(this, [answers]);
-      createFilesTail.apply(this, [answers]);
-    }.bind(this));
-  } else {
-    console.log('error site');
-    return;
-  }
+var myPrompt = function(question) {
+  var defer = Q.defer();
+  this.prompt(question, function(answers) {
+    defer.resolve(answers);
+  });
+  return defer.promise;
+};
 
-  //this.template(this.sourceRoot() + '/demo.html',this.destinationPath() + '/demo.html');
+var myPro = function() {
+
+};
+
+myPro.prototype.quest = function() {
+  return this;
+}
+
+Generator.prototype.initFiles = function() {
+  co(function*() {
+    var answers = yield myPrompt.call(this, [{
+      type: 'list',
+      name: 'site',
+      message: 'Your site name',
+      choices: ['app', 'tail'],
+      default: this.answers.site || 'app'
+    }, {
+      type: 'input',
+      name: 'routeName',
+      message: 'Your route name',
+      default: this.answers.routeName || 'my-route'
+    }]);
+    console.log(answers);
+
+    var choices = [];
+    if (answers.site === 'app') {
+      choices = ['sample page', 'server page', 'vue page', 'server + vue page'];
+    } else {
+      choices = ['sample page', 'list page', 'sample page + server', 'list page + server'];
+    }
+
+    var subAnswers = yield myPrompt.call(this, [{
+      type: 'list',
+      name: 'type',
+      message: 'what type of page do you need',
+      choices: choices
+    }]);
+
+    answers = _.assignIn(answers, subAnswers);
+    addRoute.apply(this, [answers]);
+    if (answers.site === 'app') {
+      createFiles.apply(this, [answers]);
+    } else {
+      createFilesTail.apply(this, [answers]);
+    }
+  }.bind(this));
 };
 
 var addRoute = function(answers) {

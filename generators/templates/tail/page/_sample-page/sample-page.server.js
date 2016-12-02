@@ -10,6 +10,6 @@
 
 module.exports = function( c ){
   return function *(){
-    this.body = yield c.render.bind(this)( __dirname +'/goods-detail.html' );
+    this.body = yield c.render.bind(this)( __dirname +'/sample-page.html' );
   };
 };
