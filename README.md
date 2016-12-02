@@ -35,5 +35,5 @@ yo bone:route //暂时只支持app,tail目录
 ```
 ### component
 ```
-yo bone:route //暂时只支持app,tail目录
+yo bone:comp //暂时只支持app,tail目录
 ```
