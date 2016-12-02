@@ -46,7 +46,6 @@ Generator.prototype.initFiles = function() {
       message: 'Your route name',
       default: this.answers.routeName || 'my-route'
     }]);
-    console.log(answers);
 
     var choices = [];
     if (answers.site === 'app') {
