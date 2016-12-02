@@ -14,11 +14,12 @@
   <script src="{{staticPrefix}}/page/<%= routeName %>/<%= routeName %>.js"></script>
 {% endblock %}
 <% } %>
-
+<% if(useServer){ %>
 {% block template %}
 {% raw %}
-
-
+<% }else{ %>
+{% block content %}
+<% } %>
   <div class="container">
     <div class="header">
       <h3 class="text-muted">
@@ -42,6 +43,7 @@
       <p>♥ by Bone@{{project.boneVersion}}.</p>
     </div>
   </div>
-
+<% if(useServer){ %>
 {% endraw %}
+<% } %>
 {% endblock %}

@@ -49,9 +49,9 @@ Generator.prototype.initFiles = function() {
 
     var choices = [];
     if (answers.site === 'app') {
-      choices = ['sample page', 'server page', 'vue page', 'server + vue page'];
+      choices = ['simple page', 'server page', 'vue page', 'server + vue page'];
     } else {
-      choices = ['sample page', 'list page', 'sample page + server', 'list page + server'];
+      choices = ['simple page', 'list page', 'simple page + server', 'list page + server'];
     }
 
     var subAnswers = yield myPrompt.call(this, [{
@@ -88,11 +88,13 @@ var addRoute = function(answers) {
 
 var createFiles = function(answers) {
   answers.useVuejs = false;
+  answers.useServer = false;
   this.template(
     this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.scss',
     this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.scss',
     answers);
   if (answers.type === 'server page' || answers.type === 'server + vue page') {
+    answers.useServer = true;
     this.template(
       this.sourceRoot() + '/../ejs/' + answers.site + '/' + 'template.server.js',
       this.destinationPath() + '/' + answers.site + '/page/' + answers.routeName + '/' + answers.routeName + '.server.js',
