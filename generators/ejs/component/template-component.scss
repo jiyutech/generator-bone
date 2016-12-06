@@ -1,0 +1,5 @@
+.component-<%= componentName %> {
+  &:after {
+    display: inline; content:' & it\'s SASS.';
+  }
+}
