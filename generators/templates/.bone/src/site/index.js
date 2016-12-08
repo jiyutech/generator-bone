@@ -107,7 +107,7 @@ module.exports = function( siteConf ){
       [ path.normalize( boneConf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}' ) ].forEach(function( path ){
         site.app.use(koaStaticCache(path, {
           prefix: siteConf.staticPrefix,
-          maxAge: 31536000000
+          maxage: 31536000000
         }));
       });
 
@@ -117,7 +117,7 @@ module.exports = function( siteConf ){
           var rootifyDir = path.normalize( boneConf.buildPath +'/'+ siteConf.src  +'/{{staticPrefix}}/'+ dir.slice(siteConf.src.length) );
           site.app.use(koaStaticCache( rootifyDir, {
             prefix: (siteConf.sitePrefix || ''),
-            maxAge: 3600*12
+            maxage: 3600*12
           }));
         });
       }

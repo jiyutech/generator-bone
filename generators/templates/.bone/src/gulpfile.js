@@ -88,16 +88,22 @@ module.exports = {
           '/**/*.common.js',
           '/**/*.server.js',
           '/**/*.json',
-          '/server/**/*.js',
-          '/**/*.html',
+          '/server/**/*.js'
         ]),
       ], function( args ){
-        console.error('Reload Server.');
-        server.start().done(function(){
-          setTimeout(function(){
-            livereload.changed( args.path );
-          }, 1000);
+        console.error('Reloading Server.');
+        server.start().then(function(){
+          console.error('Server Reloaded.');
+          livereload.changed( args.path );
         });
+      });
+
+      // Livereload for JS
+      gulp.watch([
+        resolveBySites([ '/**/*.html' ]),
+      ], function( args ){
+        console.error('Reload HTML.');
+        livereload.changed( args.path );
       });
 
       // Livereload for CSS

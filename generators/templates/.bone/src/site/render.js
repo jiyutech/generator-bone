@@ -34,9 +34,8 @@ function htmlSave( str ) {
   return str.replace(/<[/]?script.*?>/ig, '');
 }
 
-var doRender = views( projectBase, {
-  map: { html: 'swig' }
-});
+var doRender = views( projectBase, { map: { html: 'swig' } });
+var devDoRender = views( projectBase, { map: { html: 'swig' }, cache: false, });
 
 // Render Interface
 module.exports = function( controllerHelper, siteConf ){
@@ -68,7 +67,12 @@ module.exports = function( controllerHelper, siteConf ){
         viewPath.slice( siteConf.src.length )
       );
     }
-    return doRender(path.normalize( viewPath ), data);
+    if ( env == 'dev' ) {
+      return devDoRender(path.normalize( viewPath ), data);
+    }
+    else {
+      return doRender(path.normalize( viewPath ), data);
+    }
   };
 
   controllerHelper.render = _render;
