@@ -38,6 +38,15 @@ module.exports = function( siteConf ){
 
   const render = new Render( controllerHelper, siteConf );
 
+  var weaver = require('./middleware/weaver/weaver.js');
+  var weaverWapper = function weaverWapper() {
+    var arg = [site];
+    _.forEach(arguments,function(d){
+      arg.push(d);
+    });
+    return weaver.apply(this, arg);
+  };
+
   const site = {
     env: env,
     app: koa(),
@@ -51,6 +60,7 @@ module.exports = function( siteConf ){
     middleware: {
       navigator: nav,
       responseType: responseType,
+      geneWeaver: weaverWapper
     },
     logger: siteLogger,
   };
