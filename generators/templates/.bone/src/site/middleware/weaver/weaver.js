@@ -37,10 +37,10 @@ var _validateConfig = function(config) {
 };
 
 var weaver = function() {
-  //compatible 确保idList为array
+  //compatible 确保idList为array,idList为当前路由的所有key
   var idList = _.flattenDeep(arguments);
   var temporaryIdList = _.flattenDeep(arguments[1]);
-  //合并所有用到的id,除了all
+  //合并所有用到的id,除了all,ids为本站点用到的所有的key
   ids = _.union(ids, _.difference(idList, ['all']));
   //设置定时去获取第一次数据，只会在所有id加载结束后去获取
   try {
@@ -58,6 +58,22 @@ var weaver = function() {
    */
   var nowTime = function() {
     return parseInt((new Date()).getTime() / 1000, 10);
+  };
+  
+  /**
+   * [getFilterParam 获取对象中所有key为filter_开头的对象，组成一个新的对象]
+   * @param  {[type]} query [源对象]
+   * @return {[type]}       [新的对象]
+   */
+  var getFilterParam = function(query) {
+    var filterValue = {};
+    _.forEach(query, function(v, k) {
+      if (/^filter_/.test(k)) {
+        let filterKey = _.camelCase(k.replace('filter_', ''));
+        filterValue[filterKey] = v;
+      }
+    });
+    return filterValue;
   };
 
   /**
@@ -132,10 +148,10 @@ var weaver = function() {
     let totalNumber = res.totalNumber;
     let totalPages = Math.ceil(totalNumber / pageSize);
     return {
-      totalNumber: totalNumber,
-      totalPages: totalPages,
-      pageNumber: pageNumber,
-      pageSize: pageSize
+      totalNumber: parseInt(totalNumber, 10),
+      totalPages: parseInt(totalPages, 10),
+      pageNumber: parseInt(pageNumber, 10),
+      pageSize: parseInt(pageSize, 10)
     };
   };
 
@@ -268,6 +284,11 @@ var weaver = function() {
     var weaverResult = {};
     var lang = this.query.lang || this.cookies.get('lang') || config.defaultLang;
 
+    //自动添加url中的key到idList中
+    if (params.key) {
+      idList = _.union(idList, _.isArray(params.key) ? params.key : [params.key]);
+    }
+    //如果idList中有all则获取本站点所有的id（直接获取ids）
     if (_.indexOf(idList, 'all') != '-1') {
       idList = ids;
     }
@@ -312,15 +333,32 @@ var weaver = function() {
         else weaverResult[k] = {};
       }
     });
-    
+
     this.weaverFn = {};
-    _.forEach(fn,function(d, k){
+    _.forEach(fn, function(d, k) {
       this.weaverFn[k] = d.bind(this);
     }.bind(this));
 
     this.renderMixin.weaverResult = weaverResult;
     this.renderMixin.lang = lang;
     this.renderMixin.weaverHostName = config.weaverHostName;
+
+    if (this.query.key) {
+      let key = this.query.key;
+
+      if (this.query.id) {
+        this.renderMixin.weaverResult[this.query.key] = this.weaverFn.getDataFromListByID(key, this.query.id);
+      }
+      if (this.query.pn) {
+        let filterValue = getFilterParam(this.query);
+        this.weaverFn.getListDataByPagination(key, this.query.pn, this.query.ps || 10, filterValue);
+      }
+      if (this.query.start && this.query.end) {
+        let filterValue = getFilterParam(this.query);
+        this.weaverFn.getListData(key, this.query.pn, this.query.ps || 10, filterValue);
+      }
+    }
+
     yield next;
   };
 };
