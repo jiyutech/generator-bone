@@ -148,10 +148,10 @@ var weaver = function() {
     let totalNumber = res.totalNumber;
     let totalPages = Math.ceil(totalNumber / pageSize);
     return {
-      totalNumber: parseInt(totalNumber, 10),
-      totalPages: parseInt(totalPages, 10),
-      pageNumber: parseInt(pageNumber, 10),
-      pageSize: parseInt(pageSize, 10)
+      totalNumber: totalNumber,
+      totalPages: totalPages,
+      pageNumber: pageNumber,
+      pageSize: pageSize
     };
   };
 
@@ -163,9 +163,11 @@ var weaver = function() {
    */
   fn.getDataFromListByID = function(key, $indexId) {
     var datas = this.renderMixin.weaverResult[key];
-    return _.find(datas, function(o) {
+    var res = _.find(datas, function(o) {
       return o.$indexId == $indexId;
     });
+    this.renderMixin.weaverResult[key] = res;
+    return res;
   };
 
   fn.getDataFromListByFieldName = function(key, fieldName, fieldValue) {
@@ -358,7 +360,7 @@ var weaver = function() {
         this.weaverFn.getListData(key, this.query.pn, this.query.ps || 10, filterValue);
       }
     }
-
+    this.weaverFn.removeTemporaryId();
     yield next;
   };
 };
