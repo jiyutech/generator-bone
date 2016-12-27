@@ -18,6 +18,7 @@ const weaverUrl = config.weaverHostName + '/tail/api/getValue?';
 const jsonFileHandle = require('./jsonFile.js')();
 
 var weaverContext = {};
+var packageContext = {};
 var lastUpdate = 0;
 var isRequesting = false;
 var intervalName;
@@ -59,7 +60,7 @@ var weaver = function() {
   var nowTime = function() {
     return parseInt((new Date()).getTime() / 1000, 10);
   };
-  
+
   /**
    * [getFilterParam 获取对象中所有key为filter_开头的对象，组成一个新的对象]
    * @param  {[type]} query [源对象]
@@ -100,6 +101,7 @@ var weaver = function() {
         if (result && result.statusCode == 200) {
           if (!result.body.errCode) {
             _.extend(weaverContext, result.body.data);
+      _.extend(packageContext, result.body.packageInfo);  
             jsonFileHandle.saveJsonFile(jsonFilePath, weaverContext);
           } else {
             console.error(result.body.errCode);
@@ -148,10 +150,10 @@ var weaver = function() {
     let totalNumber = res.totalNumber;
     let totalPages = Math.ceil(totalNumber / pageSize);
     return {
-      totalNumber: totalNumber,
-      totalPages: totalPages,
-      pageNumber: pageNumber,
-      pageSize: pageSize
+      totalNumber: parseInt(totalNumber, 10),
+      totalPages: parseInt(totalPages, 10),
+      pageNumber: parseInt(pageNumber, 10),
+      pageSize: parseInt(pageSize, 10)
     };
   };
 
@@ -284,6 +286,7 @@ var weaver = function() {
     var params = this.request.query;
     var reqtime = new Date().getTime();
     var weaverResult = {};
+    var packageInfo = {};
     var lang = this.query.lang || this.cookies.get('lang') || config.defaultLang;
 
     //自动添加url中的key到idList中
@@ -310,11 +313,13 @@ var weaver = function() {
       if (result && result.statusCode == 200) {
         if (!result.body.errCode) {
           _.extend(weaverResult, result.body.data);
+    _.extend(packageInfo, result.body.packageInfo);
         }
       }
     } else {
       _.forEach(idList, function(v) {
         weaverResult[v] = _.cloneDeep(weaverContext[v]);
+  packageInfo[v] = _.cloneDeep(packageContext[v]);
       });
     }
     //获取到了当前页面所需要的所有的weaverResult
@@ -342,6 +347,7 @@ var weaver = function() {
     }.bind(this));
 
     this.renderMixin.weaverResult = weaverResult;
+    this.renderMixin.packageInfo = packageInfo;
     this.renderMixin.lang = lang;
     this.renderMixin.weaverHostName = config.weaverHostName;
 
