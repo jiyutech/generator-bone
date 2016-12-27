@@ -1,6 +1,6 @@
 {
   "name": "generator-bone",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "the generator for koa by jiyu",
   "main": "index.js",
   "files": [
