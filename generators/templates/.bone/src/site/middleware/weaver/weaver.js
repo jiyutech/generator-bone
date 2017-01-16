@@ -355,7 +355,8 @@ var weaver = function() {
       let key = this.query.key;
 
       if (this.query.id) {
-        this.renderMixin.weaverResult[this.query.key] = this.weaverFn.getDataFromListByID(key, this.query.id);
+        this.renderMixin.weaverResult.detailInfo = this.weaverFn.getDataFromListByID(key, this.query.id);
+        this.renderMixin.weaverResult[this.query.key] = undefined;
       }
       if (this.query.pn) {
         let filterValue = getFilterParam(this.query);
@@ -383,6 +384,11 @@ module.exports = function(s, selfConfig) {
   }
 
   config = _.assignIn(config, selfConfig);
+  
+  //保证线上环境一定是异步获取数据
+  if (config.env === 'prod') {
+    config.sync = false;
+  }
 
   let res = _validateConfig(config);
 
