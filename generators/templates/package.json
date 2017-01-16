@@ -14,7 +14,8 @@
     "forever-prod": "export NODE_ENV=prod && forever start --uid ${PWD##*/} --append -c \"node --harmony\" ./.bone/serve.js",
     "forever-test": "export NODE_ENV=test && forever start --uid ${PWD##*/} --append -c \"node --harmony\" ./.bone/serve.js",
     "forever-restart": "forever restart ${PWD##*/}",
-    "forever-stop": "forever stop ${PWD##*/}"
+    "forever-stop": "forever stop ${PWD##*/}",
+    "upgrade": "npm update -g generator-bone && yo bone:update"
   },
   "engines": {
     "node": "4.4.7"

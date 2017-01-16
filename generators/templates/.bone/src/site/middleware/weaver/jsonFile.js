@@ -4,9 +4,7 @@ var initFile = function(filepath, initValue) {
     throw new Error('filepath is unvalued');
     return;
   }
-  try {
-    fs.readFileSync(filepath);
-  } catch (e) {
+  if (!fs.existsSync(filepath)) {
     fs.openSync(filepath, 'w+');
     if (initValue) {
       fs.writeFileSync(filepath, JSON.stringify(initValue, null, '   '), 'UTF-8');
@@ -14,7 +12,7 @@ var initFile = function(filepath, initValue) {
   }
 };
 var readJsonFile = function(filepath) {
-  try { 
+  try {
     var r = fs.readFileSync(filepath);
   } catch (e) {
     console.error(e);
