@@ -9,7 +9,7 @@ var weaverTrigger = require('./weaver-trigger.js');
 const _ = require('lodash');
 const co = require('co');
 var config = {
-  defaultLang: 'en',
+  defaultLang: 'zh',
   weaverHostName: 'http://sta.weaver.jiyu.tech',
   env: 'prod',
   sync: false
@@ -21,7 +21,6 @@ var weaverContext = {};
 var packageContext = {};
 var lastUpdate = 0;
 var isRequesting = false;
-var intervalName;
 var firstGetDataTimeOut;
 var ids = [];
 var jsonFilePath = process.cwd() + '/weaver-data.json';
@@ -101,7 +100,7 @@ var weaver = function() {
         if (result && result.statusCode == 200) {
           if (!result.body.errCode) {
             _.extend(weaverContext, result.body.data);
-      _.extend(packageContext, result.body.packageInfo);  
+            _.extend(packageContext, result.body.packageInfo);
             jsonFileHandle.saveJsonFile(jsonFilePath, weaverContext);
           } else {
             console.error(result.body.errCode);
@@ -112,6 +111,25 @@ var weaver = function() {
       }
     });
   }
+
+  /**
+   * [get 获取指定key的数据]
+   * @param  {[String]} key [获取数据的key]
+   * @return {[Object]}
+   */
+  fn.get = function(key){
+    return this.renderMixin.weaverResult[key];
+  };
+
+  /**
+   * [set 设定指定key的数据]
+   * @param  {[String]} key [获取数据的key]
+   * @param {[Object]} object [数据]
+   */
+  fn.set = function(key, object) {
+    if (!this.renderMixin.weaverResult[key]) return false;
+    return this.renderMixin.weaverResult[key] = object;
+  };
 
 
   /**
@@ -313,13 +331,13 @@ var weaver = function() {
       if (result && result.statusCode == 200) {
         if (!result.body.errCode) {
           _.extend(weaverResult, result.body.data);
-    _.extend(packageInfo, result.body.packageInfo);
+          _.extend(packageInfo, result.body.packageInfo);
         }
       }
     } else {
       _.forEach(idList, function(v) {
         weaverResult[v] = _.cloneDeep(weaverContext[v]);
-  packageInfo[v] = _.cloneDeep(packageContext[v]);
+        packageInfo[v] = _.cloneDeep(packageContext[v]);
       });
     }
     //获取到了当前页面所需要的所有的weaverResult
@@ -352,7 +370,7 @@ var weaver = function() {
     this.renderMixin.weaverHostName = config.weaverHostName;
 
     if (this.query.key) {
-      let key = this.query.key;
+      let key = _.camelCase(this.query.key);
 
       if (this.query.id) {
         this.renderMixin.weaverResult.detailInfo = this.weaverFn.getDataFromListByID(key, this.query.id);
@@ -364,7 +382,7 @@ var weaver = function() {
       }
       if (this.query.start && this.query.end) {
         let filterValue = getFilterParam(this.query);
-        this.weaverFn.getListData(key, this.query.pn, this.query.ps || 10, filterValue);
+        this.weaverFn.getListData(key, this.query.start, this.query.end, filterValue);
       }
     }
     this.weaverFn.removeTemporaryId();
@@ -384,7 +402,7 @@ module.exports = function(s, selfConfig) {
   }
 
   config = _.assignIn(config, selfConfig);
-  
+
   //保证线上环境一定是异步获取数据
   if (config.env === 'prod') {
     config.sync = false;
