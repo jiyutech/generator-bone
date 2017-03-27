@@ -117,7 +117,7 @@ var weaver = function() {
    * @param  {[String]} key [获取数据的key]
    * @return {[Object]}
    */
-  fn.get = function(key){
+  fn.get = function(key) {
     return this.renderMixin.weaverResult[key];
   };
 
@@ -130,7 +130,6 @@ var weaver = function() {
     if (!this.renderMixin.weaverResult[key]) return false;
     return this.renderMixin.weaverResult[key] = object;
   };
-
 
   /**
    * [getListData 获取指定区域的数据（slice），数据会自动绑定到weaverResult上](public)
@@ -347,10 +346,18 @@ var weaver = function() {
       //当数据为list的情况
       if (_.isArray(v)) {
         _.forEach(v, function(d, c) {
-          let $indexId = d.schemaId;
-          if (d.value) v[c] = fn.getValueByLang(d.value, lang);
-          else v[c] = {};
-          v[c].$indexId = $indexId;
+          try {
+            let $indexId = d.schemaId;
+            console.log(d);
+            if (d.value) v[c] = fn.getValueByLang(d.value, lang);
+            else v[c] = {};
+            v[c].$indexId = $indexId;
+          } catch (e) {
+            console.error(e);
+            console.log(d);
+            console.log(v[c]);
+            console.error('---------end--------')
+          }
         });
         weaverResult[k] = v;
       } else { //当数据为default的情况
