@@ -16,6 +16,7 @@ var config = {
 };
 const weaverUrl = config.weaverHostName + '/tail/api/getValue?';
 const jsonFileHandle = require('./jsonFile.js')();
+const boneInfo = require(process.cwd() + '/package.json');
 
 var weaverContext = {};
 var packageContext = {};
@@ -23,6 +24,7 @@ var lastUpdate = 0;
 var isRequesting = false;
 var firstGetDataTimeOut;
 var ids = [];
+var commonIds = [];
 var jsonFilePath = process.cwd() + '/weaver-data.json';
 
 jsonFileHandle.initFile(jsonFilePath, {});
@@ -76,6 +78,38 @@ var weaver = function() {
     return filterValue;
   };
 
+  var divideWeaverDataByLang = function(weaverData) {
+    var res = {};
+    _.forEach(weaverData, function(data, key) {
+      try {
+        // list数据
+        if (_.isArray(data)) {
+          _.forEach(data, function(list) {
+            _.forEach(list.value, function(value, lang) {
+              res[lang] = res[lang] || {};
+              res[lang][key] = res[lang][key] || [];
+              res[lang][key].push(_.extend({ $indexId: list.schemaId }, value));
+            });
+          });
+        } else if (data.value) { // default数据
+          _.forEach(data.value, function(value, lang) {
+            res[lang] = res[lang] || {};
+            res[lang][key] = value;
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    });
+    return res;
+  };
+
+  var addToWeaverContext = function(data) {
+    _.forEach(data, function(everyLangData, lang) {
+      weaverContext[lang] = _.assignIn({}, weaverContext[lang], everyLangData);
+    });
+  };
+
   /**
    * [getWeaverContext 获取ids里面所有的数据，使用post方式](private)
    * @return {[empty]} [null]
@@ -91,6 +125,7 @@ var weaver = function() {
           method: 'POST',
           json: {
             id: ids,
+            boneVersion: boneInfo.boneVersion,
             lastUpdate: lastUpdate,
             mrechant: config.mrechant
           }
@@ -99,7 +134,8 @@ var weaver = function() {
         lastUpdate = nowTime();
         if (result && result.statusCode == 200) {
           if (!result.body.errCode) {
-            _.extend(weaverContext, result.body.data);
+            let res = divideWeaverDataByLang(result.body.data);
+            addToWeaverContext(res);
             _.extend(packageContext, result.body.packageInfo);
             jsonFileHandle.saveJsonFile(jsonFilePath, weaverContext);
           } else {
@@ -225,27 +261,6 @@ var weaver = function() {
   };
 
   /**
-   * [getValueByLang 获取对应语言的value](private)
-   * @param  {[Object]} values [多种语言的值]
-   * @param  {[String]} lang   [当前语言]
-   * @return {[Object]}        [对应当前语言的value]
-   */
-  fn.getValueByLang = function(values, lang) {
-    lang = lang || config.defaultLang;
-    //获取当前语言的内容，如为空则获取默认语言的值
-    let value = values[lang] || values[config.defaultLang];
-    //判断当前的内容是否都为空
-    let flag = false;
-    _.find(value, function(d) {
-      if (d) {
-        flag = true;
-      }
-      return flag;
-    });
-    return flag ? value : values[config.defaultLang];
-  };
-
-  /**
    * [getPreId 获取指定id的前一个数据，这里的前一个是指数组里位置前一个，无所谓时间顺序，这个交由开发者判断]
    * @param  {[type]} key [description]
    * @param  {[type]} id  [description]
@@ -306,9 +321,11 @@ var weaver = function() {
     var packageInfo = {};
     var lang = this.query.lang || this.cookies.get('lang') || config.defaultLang;
 
+    idList = _.union(idList, commonIds);
+
     //自动添加url中的key到idList中
     if (params.key) {
-      idList = _.union(idList, _.isArray(params.key) ? params.key : [params.key]);
+      idList = _.union(idList, _.isArray(params.key) ? params.key : [params.key], commonIds);
     }
     //如果idList中有all则获取本站点所有的id（直接获取ids）
     if (_.indexOf(idList, 'all') != '-1') {
@@ -322,6 +339,7 @@ var weaver = function() {
         method: "POST",
         json: {
           id: idList,
+          boneVersion: boneInfo.boneVersion,
           lastUpdate: lastUpdate,
           mode: 'preview',
           mrechant: config.mrechant
@@ -329,42 +347,20 @@ var weaver = function() {
       });
       if (result && result.statusCode == 200) {
         if (!result.body.errCode) {
-          _.extend(weaverResult, result.body.data);
+          let res = divideWeaverDataByLang(result.body.data);
+          _.extend(weaverResult, res[lang]);
           _.extend(packageInfo, result.body.packageInfo);
+        } else {
+          console.error(result.body.errCode);
         }
       }
     } else {
+      //获取weaver数据和package数据
       _.forEach(idList, function(v) {
-        weaverResult[v] = _.cloneDeep(weaverContext[v]);
+        weaverResult[v] = _.cloneDeep(weaverContext[lang][v]);
         packageInfo[v] = _.cloneDeep(packageContext[v]);
       });
     }
-    //获取到了当前页面所需要的所有的weaverResult
-    _.forEach(weaverResult, function(v, k) {
-      if (!v) return;
-      //获取对应语言下的内容
-      //当数据为list的情况
-      if (_.isArray(v)) {
-        _.forEach(v, function(d, c) {
-          try {
-            let $indexId = d.schemaId;
-            console.log(d);
-            if (d.value) v[c] = fn.getValueByLang(d.value, lang);
-            else v[c] = {};
-            v[c].$indexId = $indexId;
-          } catch (e) {
-            console.error(e);
-            console.log(d);
-            console.log(v[c]);
-            console.error('---------end--------')
-          }
-        });
-        weaverResult[k] = v;
-      } else { //当数据为default的情况
-        if (v.value) weaverResult[k] = fn.getValueByLang(v.value, lang);
-        else weaverResult[k] = {};
-      }
-    });
 
     this.weaverFn = {};
     _.forEach(fn, function(d, k) {
@@ -396,6 +392,12 @@ var weaver = function() {
     yield next;
   };
 };
+
+weaver.setCommonKey = function(commonIdList) {
+  commonIds = commonIdList;
+  ids.concat(commonIds);
+};
+
 module.exports = function(s, selfConfig) {
 
   config.env = s.env;

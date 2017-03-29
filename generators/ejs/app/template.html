@@ -14,7 +14,7 @@
   <script src="{{staticPrefix}}/page/<%= routeName %>/<%= routeName %>.js"></script>
 {% endblock %}
 <% } %>
-<% if(useServer){ %>
+<% if(useVuejs){ %>
 {% block template %}
 {% raw %}
 <% }else{ %>
@@ -43,7 +43,7 @@
       <p>♥ by Bone@{{project.boneVersion}}.</p>
     </div>
   </div>
-<% if(useServer){ %>
+<% if(useVuejs){ %>
 {% endraw %}
 <% } %>
 {% endblock %}
