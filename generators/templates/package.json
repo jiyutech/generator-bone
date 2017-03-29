@@ -15,6 +15,12 @@
     "forever-test": "export NODE_ENV=test && forever start --uid ${PWD##*/} --append -c \"node --harmony\" ./.bone/serve.js",
     "forever-restart": "forever restart ${PWD##*/}",
     "forever-stop": "forever stop ${PWD##*/}",
+    "pm2-start": "export NODE_ENV=prod && pm2 start ./.bone/serve.js --name=\"${PWD##*/}\" ",
+    "pm2-start-cluster": "export NODE_ENV=prod && pm2 start ./.bone/serve.js --name=\"${PWD##*/}\" -i 1",
+    "pm2-reload": "export NODE_ENV=prod && pm2 reload ${PWD##*/}",
+    "pm2-restart": "export NODE_ENV=prod && pm2 restart ${PWD##*/}",
+    "pm2-stop": "export NODE_ENV=prod && pm2 stop ${PWD##*/}",
+    "pm2-delete": "export NODE_ENV=prod && pm2 delete ${PWD##*/}",
     "upgrade": "npm update -g generator-bone && yo bone:update"
   },
   "engines": {
