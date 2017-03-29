@@ -395,7 +395,7 @@ var weaver = function() {
 
 weaver.setCommonKey = function(commonIdList) {
   commonIds = commonIdList;
-  ids.concat(commonIds);
+  ids = ids.concat(commonIds);
 };
 
 module.exports = function(s, selfConfig) {
