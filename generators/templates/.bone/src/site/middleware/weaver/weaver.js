@@ -28,8 +28,12 @@ var commonIds = [];
 var jsonFilePath = process.cwd() + '/weaver-data.json';
 
 jsonFileHandle.initFile(jsonFilePath, {});
-weaverContext = jsonFileHandle.readJsonFile(jsonFilePath);
-
+var savedWeaverContext = jsonFileHandle.readJsonFile(jsonFilePath);
+if (savedWeaverContext.boneVersion != boneInfo.boneVersion) {
+  jsonFileHandle.saveJsonFile(jsonFilePath, { boneVersion: boneInfo.boneVersion });
+} else {
+  weaverContext = savedWeaverContext.data;
+}
 var _validateConfig = function(config) {
   if (!config.mrechant) {
     console.error('weaver配置中缺少mrechant');
@@ -137,7 +141,7 @@ var weaver = function() {
             let res = divideWeaverDataByLang(result.body.data);
             addToWeaverContext(res);
             _.extend(packageContext, result.body.packageInfo);
-            jsonFileHandle.saveJsonFile(jsonFilePath, weaverContext);
+            jsonFileHandle.saveJsonFile(jsonFilePath, { boneVersion: boneInfo.boneVersion, data: weaverContext });
           } else {
             console.error(result.body.errCode);
           }
