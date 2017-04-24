@@ -1,0 +1,17 @@
+* 初始化项目
+1. mkdir my-new-project && cd $_
+2. yo bone
+3. npm install
+4. npm run start
+
+* 更新项目里的bone
+  yo bone:update
+
+* 增加路由
+  yo bone:route [site] [route]
+
+* 新增组件
+  yo bone:comp [site] [component]
+
+* 更新全局的bone
+  npm update -g generator-bone

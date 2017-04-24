@@ -1,23 +1,19 @@
 {
-  "update": {
-    "copyFileList": [{
-      "path": "gulpfile.js"
-    }, {
-      "path": ".bowerrc"
-    },{
-      "path": ".editorconfig"
-    },{
-      "path": ".gitattributes"
-    },{
-      "path": "gitignore",
-      "dist": ".gitignore"
-    },{
-      "path": ".jshintrc"
-    },{
-      "path": "README.md"
-    },{
-      "path": ".bone",
-      "type": "directory"
-    }]
-  }
+  "updateFileList": [{
+    "path": "/.bone"
+  }, {
+    "path": "/gulpfile.js"
+  },{
+    "path": "/README.md"
+  },{
+    "path": "/.bowerrc"
+  },{
+    "path": "/.jshintrc"
+  },{
+    "path": "/.editorconfig"
+  },{
+    "path": "/.gitattributes"
+  },{
+    "path": "/.babelrc"
+  }]
 }

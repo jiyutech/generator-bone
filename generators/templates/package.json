@@ -1,7 +1,7 @@
 {
   "name": "<%= pkgName %>",
   "version": "1.0.0",
-  "boneVersion": "1.2.11",
+  "boneVersion": "<%= boneVersion %>",
   "private": true,
   "scripts": {
     "prepare": "npm config set registry http://registry.npm.taobao.org/ && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass/",
@@ -24,10 +24,9 @@
     "upgrade": "npm update -g generator-bone && yo bone:update"
   },
   "engines": {
-    "node": "4.4.7"
+    "node": "6.1.0"
   },
   "dependencies": {
-    "blueimp-md5": "^2.3.0",
     "co": "^4.6.0",
     "co-body": "^4.0.0",
     "co-request": "^1.0.0",
@@ -52,14 +51,15 @@
     "moment": "^2.13.0",
     "qs": "^6.1.0",
     "select2": "^4.0.3",
-    "spectrum-colorpicker": "^1.8.0",
     "swig": "^1.4.2",
-    "tinycolor2": "^1.3.0",
     "vue": "^1.0.21"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "autoprefixer-core": "^4.0.2",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
     "bower": "^1.7.9",
     "brfs": "^1.4.1",
@@ -91,7 +91,7 @@
     "gulp-sass": "^2.0.4",
     "gulp-size": "^1.1.0",
     "gulp-sourcemaps": "^1.3.0",
-    "gulp-uglify": "^1.0.1",
+    "gulp-uglify": "^2.1.2",
     "gulp-useref": "^1.0.2",
     "gulp-util": "^3.0.7",
     "html-loader": "^0.4.3",

@@ -1,18 +1,17 @@
-var yeoman = require('yeoman-generator');
-var inquirer = require('inquirer');
-var fs = require('fs');
-var _ = require('lodash');
-var path = require('path');
-var util = require('util');
+var Generator = require('yeoman-generator');
+const echoCow = require('./lib/echo-cow.js');
+const moduleVersion = require('./lib/module-version.js');
+const packageInfo = require('../package.json');
 
-
-var Generator = module.exports = function Generator() {
-
-  yeoman.generators.NamedBase.apply(this, arguments);
-  //console.log(yeoman.generators.Base.prototype);
-  var sourceRoot = path.join(__dirname, '/templates');
-  this.sourceRoot(sourceRoot);
-  var destinationPath = this.destinationPath();
+module.exports = class extends Generator {
+  constructor(args, opts) {
+    super(args, opts);
+  }
+  initializing() {
+    let moduleName = 'generator-bone';
+    return moduleVersion(moduleName).then((result) => {
+      this.latestVersion = result.replace(/\n/g, '');
+      echoCow(this.latestVersion, packageInfo.version);
+    });
+  }
 };
-
-util.inherits(Generator, yeoman.generators.NamedBase);

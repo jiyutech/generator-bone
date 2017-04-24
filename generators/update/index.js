@@ -1,59 +1,65 @@
-var updateJs = require('../update.js');
-var util = require('util');
-var config = require('../yo-config.json');
-var yeoman = require('yeoman-generator');
-var _ = require('lodash');
-var fs = require('fs');
+const Base = require('../base.js');
+const path = require('path');
+const fs = require('fs');
+const _ = require('lodash');
+const util = require('../util.js');
+const colors = require('colors');
+const updateFileList = require('../yo-config.json').updateFileList;
+const packageInfo = require('../../package.json');
 
-var Generator = module.exports = function Generator() {
-  updateJs.apply(this, arguments);
-};
-
-util.inherits(Generator, updateJs);
-
-Generator.prototype.updateBone = function() {
-  this.prompt([{
-    type: 'confirm',
-    name: 'gitPushed',
-    message: 'have push your project to git'
-  }], function(answers) {
-    if (answers.gitPushed) {
-      updateTask.apply(this, [answers]);
-    }
-  }.bind(this));
-}
-
-var updateTask = function() {
-  config = config['update'];
-  _.forEach(config.copyFileList, function(v) {
-    if (v.type === 'directory') {
-      yeoman.generators.Base.prototype.bulkDirectory.apply(this, [v.path, v.dist || v.path]);
-    } else {
-      yeoman.generators.Base.prototype.copy.apply(this, [v.path, v.dist || v.path]);
-    }
-  }.bind(this));
-  var destinationPath = this.destinationPath();
-  var sourceRoot = this.sourceRoot();
-
-  var distText = fs.readFileSync(destinationPath + '/package.json', 'utf-8');
-  var sourceText = fs.readFileSync(sourceRoot + '/package.json', 'utf-8');
+function copyPackageFile() {
+  let distText = fs.readFileSync(`${this.destinationRoot()}/package.json`, 'utf-8');
+  distText = JSON.parse(distText);
+  let sourceText = fs.readFileSync(`${this.sourceRoot()}/package.json`, 'utf-8');
   sourceText = JSON.parse(sourceText);
-  try {
-    distText = JSON.parse(distText);
-  } catch (err) {
-    console.log('package.json is invaild');
-  }
-  if (typeof distText === 'object') {
-    var mergeFields = ['dependencies', 'devDependencies'];
-    var replaceFields = ['boneVersion', 'scripts', 'engines'];
-    _.forEach(mergeFields, function(v) {
-      _.defaults(distText[v], sourceText[v]);
-    });
-    _.forEach(replaceFields, function(v) {
-      distText[v] = sourceText[v];
-    });
-  } else {
-    distText = sourceText;
-  }
-  fs.writeFileSync(destinationPath + '/package.json', JSON.stringify(distText, null, "  "));
+
+  const mergeFields = ['dependencies', 'devDependencies'];
+  const replaceFields = ['scripts', 'engines'];
+  _.forEach(mergeFields, (v) => {
+    _.defaults(distText[v], sourceText[v]);
+  });
+  _.forEach(replaceFields, (v) => {
+    distText[v] = sourceText[v];
+  });
+  distText.boneVersion = packageInfo.version;
+  fs.writeFileSync(`${this.destinationRoot()}/package.json`, JSON.stringify(distText, null, '  '));
 }
+
+module.exports = class extends Base {
+  constructor(args, opts) {
+    super(args, opts);
+  }
+  initializing() {
+    this.sourceRoot(path.join(__dirname, '../templates'));
+    return Base.prototype.initializing.call(this);
+  }
+  prompting() {
+    this.updateSuccessful = false;
+    return this.prompt([{
+      type: 'confirm',
+      name: 'gitPushed',
+      message: 'have push your project to git',
+    }]).then((answers) => {
+      this.answers = answers;
+    });
+  }
+  writing() {
+    if (this.answers.gitPushed) {
+      _.forEach(updateFileList, (v) => {
+        util.copyFile.call(this, v.path);
+      });
+      copyPackageFile.call(this);
+      this.updateSuccessful = true;
+    }
+  }
+  install() {
+    if (this.answers.gitPushed) {
+      this.npmInstall();
+    }
+  }
+  end() {
+    if (this.updateSuccessful) {
+      console.log(colors.green('更新bone成功'));
+    }
+  }
+};

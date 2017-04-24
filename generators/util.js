@@ -67,9 +67,37 @@ function appName (self) {
   return suffix ? self._.classify(suffix) : '';
 }
 
+function copyFile(source, dest) {
+  if (source) {
+    this.fs.copy(this.sourceRoot() + source, this.destinationRoot() + (dest || source));
+  }
+}
+
+function copyFileTpl(source, dest, data) {
+  if (source) {
+    this.fs.copyTpl(
+      this.templatePath(this.sourceRoot() + source),
+      this.destinationPath(this.destinationRoot() + (dest || source)),
+      data
+    );
+  }
+}
+
+// function copyAbsoulteFileTpla(source, dest, data) {
+//   if (source && dest) {
+//     this.fs.copyTpl(
+//       this.templatePath(source),
+//       this.destinationPath(dest),
+//       data
+//     );
+//   }
+// }
 
 module.exports = {
-  rewrite: rewrite,
-  rewriteFile: rewriteFile,
-  appName: appName
+  rewrite,
+  rewriteFile,
+  appName,
+  copyFile,
+  copyFileTpl,
+  // copyAbsoulteFileTpla,
 };

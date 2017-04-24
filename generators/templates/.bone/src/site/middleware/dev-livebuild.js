@@ -61,6 +61,7 @@ module.exports = function( options ){
         module: {
           loaders: [
             { test: /\.html$/, loader: 'html' },
+            { test: /\.js$/, exclude: /(node_modules|vendor)/, loader: 'babel-loader?cacheDirectory=.temp' },
             // { test: /\.scss$/, loader: 'sass' }
             // TODO Sass Loader
           ]
