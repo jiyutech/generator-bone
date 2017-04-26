@@ -61,12 +61,12 @@ module.exports = class extends Base {
       util.copyFileTpl.call(this, '/package.json', null, answers);
       this.initSuccessful = true;
     } else {
-      console.log('升级bone：' + colors.green('npm update -g generator-bone'));
+      console.log('升级bone：' + colors.green('npm install -g generator-bone'));
     }
   }
   end() {
     if (this.initSuccessful) {
-      console.log('项目初始化成功：\n' + colors.green('1.安装依赖  npm install \n') + colors.green('2.启动项目  npm run start \n'));
+      console.log('项目初始化成功：\n' + colors.green('1.安装依赖  npm install \n') + colors.green('2.启动项目  npm run dev \n'));
     }
   }
 };
