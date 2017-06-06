@@ -17,8 +17,9 @@ module.exports = {
       'response_type': 'code',
       'scope': args.scope || 'snsapi_base',
       'state': args.state || 'anonymous',
+      'component_appid': args.componentAppId, // 三方授权用
     }) + '#wechat_redirect';
-    logger.log(url);
+    logger.info('WX Redirect to: '+ url);
     return url;
   },
   // 剔除URL中的code和state参数
